@@ -16,3 +16,4 @@ MUST HAVE:
 			[] front kick
 			[] spin kick
 			[] downwards punch
+			[] torso and legs decopuling
