@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://x7vfjb13523i"]
+
+[ext_resource type="PackedScene" uid="uid://b6d8tuy0dsqdc" path="res://scenes/player.tscn" id="1_vba4s"]
+[ext_resource type="Texture2D" uid="uid://dd7vwc2u2lgko" path="res://assets/sprites/background_sketch.png" id="1_vu7yu"]
+
+[node name="Main" type="Node2D"]
+texture_filter = 3
+
+[node name="Bakcground" type="Sprite2D" parent="."]
+texture = ExtResource("1_vu7yu")
+centered = false
+
+[node name="Player" parent="." instance=ExtResource("1_vba4s")]
+position = Vector2(20, 60.5)
