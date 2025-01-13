@@ -13,7 +13,7 @@ MUST HAVE:
 			[x] jumping
 			[x] running
 			[] uppercut
-			[] front kick
+			[x] front kick
 			[] spin kick
 			[] downwards punch
 			[] torso and legs decopuling

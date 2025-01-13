@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b6d8tuy0dsqdc"]
+[gd_scene load_steps=24 format=3 uid="uid://b6d8tuy0dsqdc"]
 
 [ext_resource type="Script" path="res://scripts/character_body_2d.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
@@ -7,13 +7,37 @@
 atlas = ExtResource("2_ekn3o")
 region = Rect2(297, 0, 33, 35)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qpdmo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4nuu"]
 atlas = ExtResource("2_ekn3o")
-region = Rect2(297, 0, 33, 35)
+region = Rect2(330, 0, 33, 35)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_evus4"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljtsn"]
 atlas = ExtResource("2_ekn3o")
-region = Rect2(132, 0, 33, 35)
+region = Rect2(363, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bv7u"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(396, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2jnyb"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(429, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocipm"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(462, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhku7"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(495, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qen7k"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(528, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4mdf"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(561, 0, 33, 35)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nh1dg"]
 atlas = ExtResource("2_ekn3o")
@@ -67,14 +91,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qpdmo")
+"texture": SubResource("AtlasTexture_e4nuu")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_evus4")
+"texture": SubResource("AtlasTexture_ljtsn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4bv7u")
+}, {
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_2jnyb")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_ocipm")
+}, {
+"duration": 8.0,
+"texture": SubResource("AtlasTexture_fhku7")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_qen7k")
+}, {
+"duration": 0.7,
+"texture": SubResource("AtlasTexture_o4mdf")
 }],
 "loop": false,
 "name": &"front_kick",
-"speed": 13.0
+"speed": 32.0
 }, {
 "frames": [{
 "duration": 0.8,
@@ -127,8 +169,9 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_t4ntt")
-animation = &"front_kick"
+animation = &"jump"
 autoplay = "run"
+frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 3.5)
