@@ -37,6 +37,8 @@ var jumping: bool = false
 
 var gravity_tween: Tween 
 var jump_tween: Tween
+
+var action_stack
 #endregion
 
 #region ready and process

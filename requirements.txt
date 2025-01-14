@@ -1,6 +1,8 @@
 MUST HAVE:
 	[] action registering
 	[x] gravity system
+	[] action stack
+	
 	enemies:
 		[] enemies show action combos and die when performed
 		[] enemies show feedback while completing their combos
@@ -14,6 +16,6 @@ MUST HAVE:
 			[x] running
 			[] uppercut
 			[x] front kick
-			[] spin kick
+			[x] spin kick
 			[] downwards punch
 			[] torso and legs decopuling
