@@ -69,6 +69,9 @@ func _physics_process(delta: float) -> void:
 			# front kick
 			elif Input.is_action_just_pressed("front_kick"):
 				current_state = states.FRONT_KICK
+			# spin kick
+			elif Input.is_action_just_pressed("spin_kick"):
+				current_state = states.SPIN_KICK
 		
 		states.JUMP:
 			jumping = true
@@ -89,6 +92,16 @@ func _physics_process(delta: float) -> void:
 		states.FRONT_KICK:
 			if animation.animation != "front_kick":
 				animation.play("front_kick")
+				stop_jump()
+				stop_gravity()
+				# return to the default status when the animation is finished
+				await animation.animation_finished
+				current_state = states.DEFAULT
+				resume_gravity()
+			
+		states.SPIN_KICK:
+			if animation.animation != "spin_kick":
+				animation.play("spin_kick")
 				stop_jump()
 				stop_gravity()
 				# return to the default status when the animation is finished
