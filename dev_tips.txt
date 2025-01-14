@@ -1,0 +1,3 @@
+- the use of action stack to stack actions registered before finishing an animation
+- threshold for jumping to register jumps before reaching the floor
+- tweens for dynamic jumps
