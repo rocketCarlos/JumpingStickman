@@ -157,14 +157,21 @@ func _physics_process(delta: float) -> void:
 '''
 
 func resume_gravity() -> void:
-	if animation.animation != "fall":
-		animation.play("fall")
+	# the falling time will be greater the higher the player is from the ground
+	# if player is at JUMP_LEVEL (highest possible), the falling time is 0.5 seconds and that times
+	# decreases linearly until reaching 0s at y = FLOOR_LEVEL
+	var falling_time = (position.y - abs(FLOOR_LEVEL)) / (2.0 * (abs(JUMP_LEVEL) - abs(FLOOR_LEVEL)))
 	
-	gravity_tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
-	gravity_tween.tween_property(self, "position", Vector2(position.x, FLOOR_LEVEL), 0.5)
+	if falling_time > 0:
+		if animation.animation != "fall":
+			animation.play("fall")
 	
-	await gravity_tween.finished
-	gravity_tween = null
+		gravity_tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+		gravity_tween.tween_property(self, "position", Vector2(position.x, FLOOR_LEVEL), falling_time)
+		print(falling_time)
+		
+		await gravity_tween.finished
+		gravity_tween = null
 	
 
 func stop_jump() -> void:
