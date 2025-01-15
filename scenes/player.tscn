@@ -280,3 +280,9 @@ position = Vector2(0.5, 3.5)
 shape = SubResource("RectangleShape2D_hw57j")
 
 [node name="Node2D" type="Node2D" parent="."]
+
+[node name="ComboTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]

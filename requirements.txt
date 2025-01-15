@@ -1,7 +1,7 @@
 MUST HAVE:
-	[] action registering
+	[x] action registering
 	[x] gravity system
-	[] action stack
+	[x] action stack
 	
 	enemies:
 		[] enemies show action combos and die when performed

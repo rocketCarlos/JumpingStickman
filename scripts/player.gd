@@ -9,10 +9,21 @@ current_state evolution:
 	timeouts, current_state is accept stack to register inputs. timeout MUST happen before the 
 	animation ends. the state will remain accept_stack until the animation ends and it changes to
 	default again
+	
+combo building:
+	when an action is performed, it is added to the combo array. Once the animation is finished,
+	the combo timer starts. If another one is executed before it timeouts, the action is considered
+	"in combo" with the previous one and thus, added to the combo array. A combo stops if one of 
+	the following happens:
+		1. The combo matches the combo from an enemy. Therefore, the enemy is deleted and the combo
+		array reseted.
+		2. There is no input before the combo timer timeouts. The combo array is reseted and the 
+		player loses the combo streak
 '''
 
 #region scene nodes
 @onready var animation = $AnimatedSprite2D
+@onready var combo_timer = $ComboTimer
 #endregion
 
 #region states
@@ -21,7 +32,7 @@ enum states {
 	JUMP,
 	FRONT_KICK,
 	SPIN_KICK,
-	UPPERCAT,
+	UPPERCUT,
 	DOWNWARDS_PUNCH,
 	ACCEPT_STACK, # when an action isn't finished but inputs are accepted to be executed after the current action
 	DEAD, # when game over
@@ -49,6 +60,9 @@ var gravity_tween: Tween
 var jump_tween: Tween
 
 var action_stack: Array = []
+
+# Variables for combo management
+var current_combo: Array[Globals.actions] = [] # holds the current combo values
 #endregion
 
 #region ready and process
@@ -81,7 +95,6 @@ func _physics_process(delta: float) -> void:
 			if action_stack.size() > 0:
 				current_state = action_stack[-1]
 				action_stack = []
-				print("took an action from the stack: ", current_state)
 			
 			# jump: player can jump if close enough to the floor
 			if Input.is_action_just_pressed("jump") and abs(position.y - FLOOR_LEVEL) < JUMP_THRESHOLD:
@@ -92,6 +105,9 @@ func _physics_process(delta: float) -> void:
 			# spin kick
 			elif Input.is_action_just_pressed("spin_kick"):
 				current_state = states.SPIN_KICK
+			
+			# manage the combo building
+			add_combo()
 				
 		states.ACCEPT_STACK:
 			'''
@@ -124,28 +140,22 @@ func _physics_process(delta: float) -> void:
 			# play jump animation if not already playing
 			else:
 				animation.play("jump")
+		
+		# -------------------------------------
+		# match for action states
+		# -------------------------------------
+		states.FRONT_KICK, states.SPIN_KICK, states.UPPERCUT, states.DOWNWARDS_PUNCH:
+			if animation.animation != get_action_string(current_state):
+				animation.play(get_action_string(current_state))
+				stop_jump()
+				stop_gravity()
+				prepare_stack()
+				# return to the default status when the animation is finished
+				await animation.animation_finished
+				resume_gravity()
+				start_combo()
+				current_state = states.DEFAULT
 				
-		states.FRONT_KICK:
-			if animation.animation != "front_kick":
-				animation.play("front_kick")
-				stop_jump()
-				stop_gravity()
-				prepare_stack()
-				# return to the default status when the animation is finished
-				await animation.animation_finished
-				current_state = states.DEFAULT
-				resume_gravity()
-			
-		states.SPIN_KICK:
-			if animation.animation != "spin_kick":
-				animation.play("spin_kick")
-				stop_jump()
-				stop_gravity()
-				prepare_stack()
-				# return to the default status when the animation is finished
-				await animation.animation_finished
-				current_state = states.DEFAULT
-				resume_gravity()
 
 	move_and_slide()
 #endregion
@@ -185,6 +195,56 @@ func prepare_stack() -> void:
 	current_state = states.ACCEPT_STACK
 	action_stack = []
 	
+func start_combo() -> void:
+	combo_timer.start()
 	
+func add_combo() -> void:
+	# first, check if the combo matches the enemy's combo
+	if current_combo == Globals.enemy_combo:
+		# manage "combo accepted"
+		print("matching combo: ",current_combo)
+		current_combo = []
+		combo_timer.stop()
+	# add the action to the combo
+	if is_action(current_state):
+		combo_timer.stop()
+		match current_state:
+			states.FRONT_KICK:
+				current_combo.append(Globals.actions.FRONT_KICK)
+			states.SPIN_KICK:
+				current_combo.append(Globals.actions.SPIN_KICK)
+			states.UPPERCUT:
+				current_combo.append(Globals.actions.UPPERCUT)
+			states.DOWNWARDS_PUNCH:
+				current_combo.append(Globals.actions.DOWNWARDS_PUNCH)
+		print("action added to combo. Current combo: ", current_combo)
+		
+# returns the string associated to the animation for the passed state
+func get_action_string(state: states) -> String:
+	match state:
+		states.FRONT_KICK:
+			return "front_kick"
+		states.SPIN_KICK:
+			return "spin_kick"
+		states.UPPERCUT:
+			return "uppercut"
+		states.DOWNWARDS_PUNCH:
+			return "downwards_punch"
+		_:
+			return ""
+		
+# returns true if the state is an action
+func is_action(state: states) -> bool:
+	if state == states.FRONT_KICK or state == states.SPIN_KICK \
+	or state == states.UPPERCUT or state == states.SPIN_KICK:
+		return true
+	else:
+		return false
+		
 #endregion
 		
+
+
+func _on_combo_timer_timeout() -> void:
+	print("timeout for combo. Last combo state: ", current_combo)
+	current_combo = []
