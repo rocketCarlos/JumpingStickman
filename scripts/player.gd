@@ -19,6 +19,7 @@ combo building:
 		array reseted.
 		2. There is no input before the combo timer timeouts. The combo array is reseted and the 
 		player loses the combo streak
+	Once the "hit frame" of an animation is reached, the combo is checked with the enemy.
 '''
 
 #region scene nodes
@@ -63,6 +64,7 @@ var action_stack: Array = []
 
 # Variables for combo management
 var current_combo: Array[Globals.actions] = [] # holds the current combo values
+var action_already_added: bool = false
 #endregion
 
 #region ready and process
@@ -106,9 +108,6 @@ func _physics_process(delta: float) -> void:
 			elif Input.is_action_just_pressed("spin_kick"):
 				current_state = states.SPIN_KICK
 			
-			# manage the combo building
-			add_combo()
-				
 		states.ACCEPT_STACK:
 			'''
 			State accept stack:
@@ -146,6 +145,7 @@ func _physics_process(delta: float) -> void:
 		# -------------------------------------
 		states.FRONT_KICK, states.SPIN_KICK, states.UPPERCUT, states.DOWNWARDS_PUNCH:
 			if animation.animation != get_action_string(current_state):
+				add_combo()
 				animation.play(get_action_string(current_state))
 				stop_jump()
 				stop_gravity()
@@ -155,6 +155,9 @@ func _physics_process(delta: float) -> void:
 				resume_gravity()
 				start_combo()
 				current_state = states.DEFAULT
+			else:
+				if animation.frame == get_hit_frame() and not action_already_added:
+					check_combo()
 				
 
 	move_and_slide()
@@ -199,12 +202,6 @@ func start_combo() -> void:
 	combo_timer.start()
 	
 func add_combo() -> void:
-	# first, check if the combo matches the enemy's combo
-	if current_combo == Globals.enemy_combo:
-		# manage "combo accepted"
-		print("matching combo: ",current_combo)
-		current_combo = []
-		combo_timer.stop()
 	# add the action to the combo
 	if is_action(current_state):
 		combo_timer.stop()
@@ -218,6 +215,15 @@ func add_combo() -> void:
 			states.DOWNWARDS_PUNCH:
 				current_combo.append(Globals.actions.DOWNWARDS_PUNCH)
 		print("action added to combo. Current combo: ", current_combo)
+		
+func check_combo() -> void:
+	# first, check if the combo matches the enemy's combo
+	if current_combo == Globals.enemy_combo:
+		# manage "combo accepted"
+		print("matching combo: ",current_combo)
+		current_combo = []
+		combo_timer.stop()
+		Globals.combo_succeeded.emit()
 		
 # returns the string associated to the animation for the passed state
 func get_action_string(state: states) -> String:
@@ -241,6 +247,20 @@ func is_action(state: states) -> bool:
 	else:
 		return false
 		
+# given the current action, returns the animation frame at which the combo is emmited
+func get_hit_frame() -> int:
+	match current_state:
+		states.FRONT_KICK:
+			return 5 
+		states.SPIN_KICK:
+			return 7
+		states.UPPERCUT:
+			return 0
+		states.DOWNWARDS_PUNCH:
+			return 0
+		_: 
+			return -1
+			
 #endregion
 		
 
