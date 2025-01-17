@@ -25,6 +25,7 @@ combo building:
 #region scene nodes
 @onready var animation = $AnimatedSprite2D
 @onready var combo_timer = $ComboTimer
+@onready var arrow_holder = $ArrowHolder
 #endregion
 
 #region states
@@ -51,6 +52,8 @@ const ANIMATION_DURATION: float = 0.875
 # amount of time before the end of an action at which we start stacking actions to be executed at 
 # the end of the current action (in seconds)
 const INPUT_THRESHOLD: float = 0.25 
+
+@export var arrow_scene: PackedScene
 #endregion
 
 #region attributes
@@ -214,10 +217,19 @@ func add_combo() -> void:
 				current_combo.append(Globals.actions.UPPERCUT)
 			states.DOWNWARDS_PUNCH:
 				current_combo.append(Globals.actions.DOWNWARDS_PUNCH)
+				
+		var arrow = arrow_scene.instantiate()
+		arrow.direction = get_arrow_string(current_state)
+		arrow.type = "dynamic"
+		arrow.fps = 18
+		arrow_holder.arrow_array.append(arrow)
+	
+		arrow_holder.set_arrows()
 		print("action added to combo. Current combo: ", current_combo)
 		
 func check_combo() -> void:
 	# first, check if the combo matches the enemy's combo
+	# TODO: DO SOMETHING ABOUT THE ARROW HOLDER
 	if current_combo == Globals.enemy_combo:
 		# manage "combo accepted"
 		print("matching combo: ",current_combo)
@@ -238,7 +250,21 @@ func get_action_string(state: states) -> String:
 			return "downwards_punch"
 		_:
 			return ""
-		
+
+# returns the string associated to the arrow direction that triggers the action
+func get_arrow_string(a: states) -> String:
+	match a:
+		states.FRONT_KICK:
+			return "right"
+		states.SPIN_KICK:
+			return "left"
+		states.UPPERCUT:
+			return "up"
+		states.DOWNWARDS_PUNCH:
+			return "down"
+		_:
+			return ""
+
 # returns true if the state is an action
 func is_action(state: states) -> bool:
 	if state == states.FRONT_KICK or state == states.SPIN_KICK \
@@ -268,3 +294,5 @@ func get_hit_frame() -> int:
 func _on_combo_timer_timeout() -> void:
 	print("timeout for combo. Last combo state: ", current_combo)
 	current_combo = []
+	arrow_holder.clear()
+	

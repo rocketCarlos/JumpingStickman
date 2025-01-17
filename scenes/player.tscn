@@ -1,7 +1,9 @@
-[gd_scene load_steps=38 format=3 uid="uid://b6d8tuy0dsqdc"]
+[gd_scene load_steps=40 format=3 uid="uid://b6d8tuy0dsqdc"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
+[ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="2_m0r6g"]
+[ext_resource type="PackedScene" uid="uid://bmp3r15q7jgc6" path="res://scenes/arrow_holder.tscn" id="3_aq04i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4d8c"]
 atlas = ExtResource("2_ekn3o")
@@ -268,6 +270,7 @@ size = Vector2(11, 29)
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 3
 script = ExtResource("1_0upaq")
+arrow_scene = ExtResource("2_m0r6g")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -284,5 +287,8 @@ shape = SubResource("RectangleShape2D_hw57j")
 [node name="ComboTimer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
+[node name="ArrowHolder" parent="." instance=ExtResource("3_aq04i")]
+position = Vector2(0, -27)
 
 [connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]
