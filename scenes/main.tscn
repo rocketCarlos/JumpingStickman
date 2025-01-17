@@ -6,6 +6,7 @@
 
 [node name="Main" type="Node2D"]
 texture_filter = 3
+position = Vector2(0, 10.34)
 
 [node name="Bakcground" type="Sprite2D" parent="."]
 texture = ExtResource("1_vc7uq")

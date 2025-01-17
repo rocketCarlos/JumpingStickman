@@ -21,7 +21,6 @@ func _ready() -> void:
 	animation = direction
 	if type == "static":
 		frame = 10
-		stop()
-	else:
-		play()
+	
+	play()
 		

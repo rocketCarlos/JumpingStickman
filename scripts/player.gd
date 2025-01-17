@@ -221,7 +221,7 @@ func add_combo() -> void:
 		var arrow = arrow_scene.instantiate()
 		arrow.direction = get_arrow_string(current_state)
 		arrow.type = "dynamic"
-		arrow.fps = 18
+		arrow.fps = 17
 		arrow_holder.arrow_array.append(arrow)
 	
 		arrow_holder.set_arrows()

@@ -9,7 +9,8 @@ func set_arrows():
 	for arrow in arrow_array:
 		arrow.position.x = pos
 		pos += offset
-		add_child(arrow)
+		if not arrow.get_parent():
+			add_child(arrow)
 
 func clear():
 	arrow_array.clear()

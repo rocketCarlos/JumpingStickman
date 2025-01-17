@@ -289,6 +289,6 @@ wait_time = 0.3
 one_shot = true
 
 [node name="ArrowHolder" parent="." instance=ExtResource("3_aq04i")]
-position = Vector2(0, -27)
+position = Vector2(0, -21)
 
 [connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]
