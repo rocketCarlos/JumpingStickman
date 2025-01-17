@@ -15,4 +15,4 @@ centered = false
 position = Vector2(20, 60.5)
 
 [node name="Enemy" parent="." instance=ExtResource("3_k23fw")]
-position = Vector2(146, 65)
+position = Vector2(146, 54.115)

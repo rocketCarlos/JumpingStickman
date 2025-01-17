@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkdfknudx2bqi"]
+[gd_scene load_steps=7 format=3 uid="uid://bkdfknudx2bqi"]
 
-[ext_resource type="Texture2D" uid="uid://b1vpntlwu80v" path="res://icon.svg" id="1_ygufl"]
+[ext_resource type="Texture2D" uid="uid://c4v2rjejfwi6p" path="res://assets/sprites/ghost1.png" id="1_fr0bl"]
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="2_723gv"]
+[ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="3_03ypa"]
+[ext_resource type="PackedScene" uid="uid://bmp3r15q7jgc6" path="res://scenes/arrow_holder.tscn" id="3_sbhkp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fhmke"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_ygufl")
+"texture": ExtResource("1_fr0bl")
 }],
 "loop": true,
 "name": &"ghost1",
@@ -15,18 +17,21 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7alau"]
-size = Vector2(128, 128)
+size = Vector2(23, 34)
 
 [node name="Enemy" type="AnimatedSprite2D"]
-scale = Vector2(0.0859375, 0.0703125)
+texture_filter = 3
 sprite_frames = SubResource("SpriteFrames_fhmke")
 animation = &"ghost1"
 script = ExtResource("2_723gv")
+arrow_scene = ExtResource("3_03ypa")
 metadata/_edit_group_ = true
 
 [node name="Hitboxes" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes"]
-position = Vector2(0, 6.10352e-05)
-scale = Vector2(1, 1)
+position = Vector2(3.5, 2)
 shape = SubResource("RectangleShape2D_7alau")
+
+[node name="ArrowHolder" parent="." instance=ExtResource("3_sbhkp")]
+position = Vector2(0, -28)

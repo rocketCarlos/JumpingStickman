@@ -1,5 +1,9 @@
 extends AnimatedSprite2D
 
+#region scene nodes
+@onready var arrow_holder = $ArrowHolder
+#endregion
+
 #region scene attributes
 enum types {
 	GHOST1,
@@ -17,7 +21,10 @@ var type_combos: Dictionary = {
 }
 var combo: Array
 
-const SPEED: float = -20.0
+const SPEED: float = -10.0
+# const SPEED: float = -1.0
+
+@export var arrow_scene: PackedScene
 #endregion
 
 #region ready and process
@@ -30,6 +37,15 @@ func _ready() -> void:
 	animation = get_string_from_type(type)
 	
 	Globals.combo_succeeded.connect(_on_combo_succeeded)
+	
+	for action in combo:
+		var arrow = arrow_scene.instantiate()
+		arrow.direction = get_string_from_action(action)
+		arrow.type = "static"
+		arrow.fps = 5
+		arrow_holder.arrow_array.append(arrow)
+	
+	arrow_holder.set_arrows()
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -50,6 +66,19 @@ func get_string_from_type(t: types) -> String:
 			return "big1"
 		types.BIG2:
 			return "big2"
+		_:
+			return ""
+			
+func get_string_from_action(t: Globals.actions) -> String:
+	match t:
+		Globals.actions.FRONT_KICK:
+			return "right"
+		Globals.actions.SPIN_KICK:
+			return "left"
+		Globals.actions.UPPERCUT:
+			return "up"
+		Globals.actions.DOWNWARDS_PUNCH:
+			return "down"
 		_:
 			return ""
 #endregion
