@@ -2,9 +2,9 @@ MUST HAVE:
 	[x] action registering
 	[x] gravity system
 	[x] action stack
-	
+	[x] progress system (accelerating time)
 	enemies:
-		[] enemies show action combos and die when performed
+		[x] enemies show action combos and die when performed
 		[] enemies show feedback while completing their combos
 		[] eniemies spawn and moving system
 		types:
@@ -19,3 +19,9 @@ MUST HAVE:
 			[x] spin kick
 			[] downwards punch
 			[] torso and legs decopuling
+
+NICE TO HAVE:
+	[] arrow holder shows arrows smoothly when added
+	[] extra effects to animations, like colors and screen shakes
+	[] improve arrow visuals when a combo succeeds
+	[] infinite parallax layer background

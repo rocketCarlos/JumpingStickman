@@ -51,14 +51,14 @@ const JUMP_THRESHOLD: float = 5.0
 const ANIMATION_DURATION: float = 0.875
 # amount of time before the end of an action at which we start stacking actions to be executed at 
 # the end of the current action (in seconds)
-const INPUT_THRESHOLD: float = 0.25 
+const INPUT_THRESHOLD: float = 0.4 
 
 @export var arrow_scene: PackedScene
 #endregion
 
 #region attributes
 var FLOOR_LEVEL = 0.0
-var JUMP_LEVEL = -45.0
+var JUMP_LEVEL = -37.0
 
 var gravity_tween: Tween 
 var jump_tween: Tween
@@ -221,7 +221,7 @@ func add_combo() -> void:
 		var arrow = arrow_scene.instantiate()
 		arrow.direction = get_arrow_string(current_state)
 		arrow.type = "dynamic"
-		arrow.fps = 17
+		arrow.fps = 19
 		arrow_holder.arrow_array.append(arrow)
 	
 		arrow_holder.set_arrows()
@@ -229,11 +229,11 @@ func add_combo() -> void:
 		
 func check_combo() -> void:
 	# first, check if the combo matches the enemy's combo
-	# TODO: DO SOMETHING ABOUT THE ARROW HOLDER
 	if current_combo == Globals.enemy_combo:
 		# manage "combo accepted"
 		print("matching combo: ",current_combo)
 		current_combo = []
+		arrow_holder.clear()
 		combo_timer.stop()
 		Globals.combo_succeeded.emit()
 		
