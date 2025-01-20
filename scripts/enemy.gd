@@ -21,7 +21,7 @@ var type_combos: Dictionary = {
 }
 var combo: Array
 
-const SPEED: float = -10.0
+const SPEED: float = -18.0
 # const SPEED: float = -1.0
 
 @export var arrow_scene: PackedScene

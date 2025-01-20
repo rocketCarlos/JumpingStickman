@@ -1,9 +1,49 @@
-[gd_scene load_steps=40 format=3 uid="uid://b6d8tuy0dsqdc"]
+[gd_scene load_steps=50 format=3 uid="uid://b6d8tuy0dsqdc"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
 [ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="2_m0r6g"]
 [ext_resource type="PackedScene" uid="uid://bmp3r15q7jgc6" path="res://scenes/arrow_holder.tscn" id="3_aq04i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kip4"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(858, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jssgj"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(891, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ald88"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(924, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35ke8"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(957, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31xcg"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(990, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3cdo"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1023, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vv2ik"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1056, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lhtnx"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1089, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0oxwm"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1122, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x0rm0"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1155, 0, 33, 35)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4d8c"]
 atlas = ExtResource("2_ekn3o")
@@ -141,6 +181,41 @@ region = Rect2(627, 0, 33, 35)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_5kip4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jssgj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ald88")
+}, {
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_35ke8")
+}, {
+"duration": 6.0,
+"texture": SubResource("AtlasTexture_31xcg")
+}, {
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_h3cdo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vv2ik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lhtnx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0oxwm")
+}, {
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_x0rm0")
+}],
+"loop": false,
+"name": &"downwards_punch",
+"speed": 32.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_b4d8c")
 }],
 "loop": true,
@@ -275,7 +350,7 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_t4ntt")
-animation = &"spin_kick"
+animation = &"downwards_punch"
 autoplay = "run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

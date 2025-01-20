@@ -67,7 +67,6 @@ var action_stack: Array = []
 
 # Variables for combo management
 var current_combo: Array[Globals.actions] = [] # holds the current combo values
-var action_already_added: bool = false
 #endregion
 
 #region ready and process
@@ -110,6 +109,9 @@ func _physics_process(delta: float) -> void:
 			# spin kick
 			elif Input.is_action_just_pressed("spin_kick"):
 				current_state = states.SPIN_KICK
+			# downwards punch
+			elif Input.is_action_just_pressed("downwards_punch"):
+				current_state = states.DOWNWARDS_PUNCH
 			
 		states.ACCEPT_STACK:
 			'''
@@ -127,6 +129,9 @@ func _physics_process(delta: float) -> void:
 			# spin kick
 			elif Input.is_action_just_pressed("spin_kick"):
 				action_stack.append(states.SPIN_KICK) 
+			# downwards punch
+			elif Input.is_action_just_pressed("downwards_punch"):
+				action_stack.append(states.DOWNWARDS_PUNCH) 
 		
 		states.JUMP:
 			# perform the jump in the correct frame
@@ -159,7 +164,7 @@ func _physics_process(delta: float) -> void:
 				start_combo()
 				current_state = states.DEFAULT
 			else:
-				if animation.frame == get_hit_frame() and not action_already_added:
+				if animation.frame == get_hit_frame():
 					check_combo()
 				
 
@@ -268,7 +273,7 @@ func get_arrow_string(a: states) -> String:
 # returns true if the state is an action
 func is_action(state: states) -> bool:
 	if state == states.FRONT_KICK or state == states.SPIN_KICK \
-	or state == states.UPPERCUT or state == states.SPIN_KICK:
+	or state == states.UPPERCUT or state == states.DOWNWARDS_PUNCH:
 		return true
 	else:
 		return false
