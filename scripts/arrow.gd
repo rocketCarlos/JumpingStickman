@@ -13,14 +13,22 @@ var type: String = "static":
 		if type not in ["static", "dynamic"]:
 			printerr(type, " is not a valid type for the arrow")
 
-var fps: int = 5
+var fps: int = 19
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	speed_scale = fps
-	animation = direction
-	if type == "static":
-		frame = 10
+	update_arrow(fps, direction, type)
 	
-	play()
-		
+func update_arrow(speed: float = fps, dir: String = "up", t: String = "static") -> void:
+	speed_scale = speed
+	animation = dir
+	
+	'''
+	if t == "static":
+		frame = 10
+	else:
+		frame = 0
+	'''
+	frame = 0
+	if t == "dynamic":
+		play()

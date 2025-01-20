@@ -3,10 +3,13 @@ MUST HAVE:
 	[x] gravity system
 	[x] action stack
 	[x] progress system (accelerating time)
+	[] progress system (hidden arrows)
 	enemies:
 		[x] enemies show action combos and die when performed
+			[] only at correct height
 		[] enemies show feedback while completing their combos
 		[] eniemies spawn and moving system
+		[] enemies can spawn in two different heights
 		types:
 			[] ghost (different types, each one with a combo)
 			[] "slendermans" (has two combos. After first one is completed, it steps back and the other one appears)
@@ -17,11 +20,13 @@ MUST HAVE:
 			[] uppercut
 			[x] front kick
 			[x] spin kick
-			[] downwards punch
-			[] torso and legs decopuling
+			[x] downwards punch
+			
 
 NICE TO HAVE:
 	[] arrow holder shows arrows smoothly when added
 	[] extra effects to animations, like colors and screen shakes
 	[] improve arrow visuals when a combo succeeds
 	[] infinite parallax layer background
+	[] torso and legs decopuling
+	[] enemies show bright arrows
