@@ -17,7 +17,7 @@ MUST HAVE:
 	animations:
 			[x] jumping
 			[x] running
-			[] uppercut
+			[X] uppercut
 			[x] front kick
 			[x] spin kick
 			[x] downwards punch

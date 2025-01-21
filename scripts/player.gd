@@ -120,6 +120,9 @@ func _physics_process(delta: float) -> void:
 			# downwards punch
 			elif Input.is_action_just_pressed("downwards_punch"):
 				current_state = states.DOWNWARDS_PUNCH
+			# uppercut
+			elif Input.is_action_just_pressed("uppercut"):
+				current_state = states.UPPERCUT
 				
 			
 			
@@ -153,6 +156,10 @@ func _physics_process(delta: float) -> void:
 			elif Input.is_action_just_pressed("downwards_punch"):
 				action_queue.append(states.DOWNWARDS_PUNCH) 
 				add_arrow(states.DOWNWARDS_PUNCH, "static")
+			# uppercut
+			elif Input.is_action_just_pressed("uppercut"):
+				action_queue.append(states.UPPERCUT) 
+				add_arrow(states.UPPERCUT, "static")
 		
 		states.JUMP:
 			# perform the jump in the correct frame
@@ -303,7 +310,7 @@ func get_hit_frame(st: states) -> int:
 		states.SPIN_KICK:
 			return 7
 		states.UPPERCUT:
-			return 0
+			return 16
 		states.DOWNWARDS_PUNCH:
 			return 18
 		_: 

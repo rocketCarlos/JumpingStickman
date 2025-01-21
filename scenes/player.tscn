@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://b6d8tuy0dsqdc"]
+[gd_scene load_steps=57 format=3 uid="uid://b6d8tuy0dsqdc"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
@@ -177,6 +177,34 @@ region = Rect2(660, 0, 33, 35)
 atlas = ExtResource("2_ekn3o")
 region = Rect2(627, 0, 33, 35)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tf838"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1188, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ca8qh"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1221, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_skv8y"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1254, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ox5k"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1287, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ots7"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1320, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uehwf"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1353, 0, 33, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eqb1h"]
+atlas = ExtResource("2_ekn3o")
+region = Rect2(1386, 0, 33, 35)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_t4ntt"]
 animations = [{
 "frames": [{
@@ -337,6 +365,32 @@ animations = [{
 "loop": false,
 "name": &"spin_kick",
 "speed": 32.0
+}, {
+"frames": [{
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_tf838")
+}, {
+"duration": 7.0,
+"texture": SubResource("AtlasTexture_ca8qh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_skv8y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ox5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ots7")
+}, {
+"duration": 12.0,
+"texture": SubResource("AtlasTexture_uehwf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eqb1h")
+}],
+"loop": false,
+"name": &"uppercut",
+"speed": 32.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hw57j"]
@@ -350,8 +404,10 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_t4ntt")
-animation = &"downwards_punch"
+animation = &"uppercut"
 autoplay = "run"
+frame = 6
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 3.5)
