@@ -8,8 +8,9 @@ enum actions {
 }
 
 # current combo that defeats the enemy
-#var enemy_combo: Array[actions]
-var enemy_combo = [actions.FRONT_KICK, actions.FRONT_KICK, actions.SPIN_KICK]
+var enemy_combo = []
+
+var defeated_enemies = 0
 
 # emitted by player when combo succeeds, recieved by enemy to die
 signal combo_succeeded

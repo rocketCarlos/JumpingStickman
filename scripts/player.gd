@@ -310,9 +310,9 @@ func get_hit_frame(st: states) -> int:
 		states.SPIN_KICK:
 			return 7
 		states.UPPERCUT:
-			return 16
+			return 5
 		states.DOWNWARDS_PUNCH:
-			return 18
+			return 8
 		_: 
 			return -1
 			

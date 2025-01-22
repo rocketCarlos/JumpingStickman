@@ -24,6 +24,7 @@ func _process(delta: float) -> void:
 
 
 func _on_combo_succeeded():
+	Globals.defeated_enemies += 1
 	var enemy = enemy_scene.instantiate()
 	add_child(enemy)
 	Engine.time_scale += 0.02

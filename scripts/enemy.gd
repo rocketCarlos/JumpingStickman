@@ -6,18 +6,24 @@ extends AnimatedSprite2D
 
 #region scene attributes
 enum types {
-	GHOST1,
-	GHOST2,
-	GHOST3,
-	BIG1,
-	BIG2,
+	MOB1,
+	MOB2,
+	MOB3,
+	FLYING1,
+	FLYING2,
+	FLYING3,
+	BIG,
 }
 var type: types
 
 var type_combos: Dictionary = {
-	types.GHOST1: [Globals.actions.FRONT_KICK, Globals.actions.FRONT_KICK, Globals.actions.SPIN_KICK],
-	types.GHOST2: [Globals.actions.UPPERCUT, Globals.actions.SPIN_KICK, Globals.actions.FRONT_KICK],
-	types.GHOST3: [Globals.actions.DOWNWARDS_PUNCH, Globals.actions.UPPERCUT, Globals.actions.DOWNWARDS_PUNCH],
+	types.MOB1: [Globals.actions.FRONT_KICK, Globals.actions.FRONT_KICK, Globals.actions.SPIN_KICK],
+	types.MOB2: [Globals.actions.UPPERCUT, Globals.actions.SPIN_KICK, Globals.actions.FRONT_KICK],
+	types.MOB3: [Globals.actions.DOWNWARDS_PUNCH, Globals.actions.UPPERCUT, Globals.actions.DOWNWARDS_PUNCH],
+	types.FLYING1: [Globals.actions.SPIN_KICK, Globals.actions.DOWNWARDS_PUNCH, Globals.actions.FRONT_KICK],
+	types.FLYING2: [Globals.actions.FRONT_KICK, Globals.actions.UPPERCUT, Globals.actions.UPPERCUT],
+	types.FLYING3: [Globals.actions.DOWNWARDS_PUNCH, Globals.actions.SPIN_KICK, Globals.actions.UPPERCUT],
+	types.BIG: [Globals.actions.FRONT_KICK, Globals.actions.UPPERCUT, Globals.actions.SPIN_KICK, Globals.actions.DOWNWARDS_PUNCH],
 }
 var combo: Array
 
@@ -30,11 +36,25 @@ const SPEED: float = -18.0
 #region ready and process
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# tpye = random or depending on the specific round
-	type = types.GHOST1 # FOR DEBUG
+	# choose what enemy can be sent
+	match Globals.defeated_enemies:
+		0:
+			type = types.MOB2
+		1:
+			type = types.MOB1
+		2:
+			type = types.MOB3
+		3:
+			type = types.FLYING1
+		12:
+			type = types.BIG
+		_:
+			type = types.values()[randi_range(0, types.values().size()-1)]
+	
 	combo = type_combos[type]
 	Globals.enemy_combo = combo
 	animation = get_string_from_type(type)
+	play()
 	
 	Globals.combo_succeeded.connect(_on_combo_succeeded)
 	
@@ -56,16 +76,20 @@ func _process(delta: float) -> void:
 #region utility functions
 func get_string_from_type(t: types) -> String:
 	match t:
-		types.GHOST1:
-			return "ghost1"
-		types.GHOST2:
-			return "ghost2"
-		types.GHOST3:
-			return "ghost3"
-		types.BIG1:
-			return "big1"
-		types.BIG2:
-			return "big2"
+		types.MOB1:
+			return "mob1"
+		types.MOB2:
+			return "mob2"
+		types.MOB3:
+			return "mob3"
+		types.FLYING1:
+			return "flying1"
+		types.FLYING2:
+			return "flying2"
+		types.FLYING3:
+			return "flying3"
+		types.BIG:
+			return "big"
 		_:
 			return ""
 			
