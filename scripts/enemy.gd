@@ -2,6 +2,8 @@ extends AnimatedSprite2D
 
 #region scene nodes
 @onready var arrow_holder = $ArrowHolder
+@onready var mobs_collision = $Hitboxes/mobs
+@onready var big_collision = $Hitboxes/big
 #endregion
 
 #region scene attributes
@@ -27,8 +29,9 @@ var type_combos: Dictionary = {
 }
 var combo: Array
 
-const SPEED: float = -18.0
-# const SPEED: float = -1.0
+const SPEED: float = -11.0
+const FLYING_HEIGHT: float = -36.5
+const BIG_HEIGHT: float = -7.5
 
 @export var arrow_scene: PackedScene
 #endregion
@@ -50,6 +53,15 @@ func _ready() -> void:
 			type = types.BIG
 		_:
 			type = types.values()[randi_range(0, types.values().size()-1)]
+			
+	match type:
+		types.FLYING1, types.FLYING2, types.FLYING3:
+			position.y += FLYING_HEIGHT
+		types.BIG:
+			position.y += BIG_HEIGHT
+			big_collision.set_deferred("disabled", false)
+			mobs_collision.set_deferred("disabled", true) 
+			
 	
 	combo = type_combos[type]
 	Globals.enemy_combo = combo
@@ -110,5 +122,9 @@ func get_string_from_action(t: Globals.actions) -> String:
 #region signal functions
 func _on_combo_succeeded() -> void:
 	# show some type of death animation
+	pass
+	
+func _on_hitboxes_area_entered(area: Area2D) -> void:
+	Globals.enemy_died.emit()
 	queue_free()
 #endregion

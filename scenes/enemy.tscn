@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bkdfknudx2bqi"]
+[gd_scene load_steps=51 format=3 uid="uid://bkdfknudx2bqi"]
 
 [ext_resource type="Texture2D" uid="uid://ux71d5sbaafd" path="res://assets/sprites/longman.png" id="1_2e22t"]
 [ext_resource type="Texture2D" uid="uid://d1u8jedkf7hw2" path="res://assets/sprites/bat.png" id="1_3lvxl"]
@@ -309,21 +309,34 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7alau"]
-size = Vector2(4, 41)
+size = Vector2(18, 35)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c33a3"]
+size = Vector2(20, 49)
 
 [node name="Enemy" type="AnimatedSprite2D"]
 texture_filter = 3
 sprite_frames = SubResource("SpriteFrames_fhmke")
-animation = &"mob1"
+animation = &"flying3"
 script = ExtResource("2_723gv")
 arrow_scene = ExtResource("3_03ypa")
 metadata/_edit_group_ = true
 
 [node name="Hitboxes" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes"]
-position = Vector2(0, -0.5)
+[node name="mobs" type="CollisionShape2D" parent="Hitboxes"]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_7alau")
+
+[node name="big" type="CollisionShape2D" parent="Hitboxes"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_c33a3")
+disabled = true
+debug_color = Color(0.594576, 0.508095, 0.548553, 0.42)
 
 [node name="ArrowHolder" parent="." instance=ExtResource("3_sbhkp")]
 position = Vector2(0, -28)
+
+[connection signal="area_entered" from="Hitboxes" to="." method="_on_hitboxes_area_entered"]

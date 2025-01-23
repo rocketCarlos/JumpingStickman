@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://wi5524nfjffu"]
+
+[ext_resource type="Texture2D" uid="uid://bcw2gkymqclo7" path="res://assets/sprites/attack.png" id="1_2w7df"]
+[ext_resource type="Script" path="res://scripts/attack.gd" id="2_snb7p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gsh1a"]
+atlas = ExtResource("1_2w7df")
+region = Rect2(0, 0, 35, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xq67h"]
+atlas = ExtResource("1_2w7df")
+region = Rect2(35, 0, 35, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7i8g"]
+atlas = ExtResource("1_2w7df")
+region = Rect2(70, 0, 35, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xj42n"]
+atlas = ExtResource("1_2w7df")
+region = Rect2(105, 0, 35, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fbrwf"]
+atlas = ExtResource("1_2w7df")
+region = Rect2(140, 0, 35, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dgiq2"]
+atlas = ExtResource("1_2w7df")
+region = Rect2(175, 0, 35, 35)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m1odi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gsh1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xq67h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c7i8g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xj42n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fbrwf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dgiq2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k7w6o"]
+size = Vector2(5, 35)
+
+[node name="Attack" type="AnimatedSprite2D"]
+texture_filter = 3
+sprite_frames = SubResource("SpriteFrames_m1odi")
+frame_progress = 0.0639891
+script = ExtResource("2_snb7p")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(3.5, -0.5)
+shape = SubResource("RectangleShape2D_k7w6o")
+
+[connection signal="animation_looped" from="." to="." method="_on_animation_looped"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

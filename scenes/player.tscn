@@ -1,9 +1,10 @@
-[gd_scene load_steps=57 format=3 uid="uid://b6d8tuy0dsqdc"]
+[gd_scene load_steps=58 format=3 uid="uid://b6d8tuy0dsqdc"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
 [ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="2_m0r6g"]
 [ext_resource type="PackedScene" uid="uid://bmp3r15q7jgc6" path="res://scenes/arrow_holder.tscn" id="3_aq04i"]
+[ext_resource type="PackedScene" uid="uid://wi5524nfjffu" path="res://scenes/attack.tscn" id="3_cilay"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5kip4"]
 atlas = ExtResource("2_ekn3o")
@@ -394,12 +395,14 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hw57j"]
-size = Vector2(11, 29)
+size = Vector2(4, 29)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="Area2D"]
 texture_filter = 3
+collision_mask = 2
 script = ExtResource("1_0upaq")
 arrow_scene = ExtResource("2_m0r6g")
+attack_scene = ExtResource("3_cilay")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -408,7 +411,7 @@ animation = &"downwards_punch"
 autoplay = "run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 3.5)
+position = Vector2(0, 3.5)
 shape = SubResource("RectangleShape2D_hw57j")
 
 [node name="Node2D" type="Node2D" parent="."]
@@ -420,4 +423,5 @@ one_shot = true
 [node name="ArrowHolder" parent="." instance=ExtResource("3_aq04i")]
 position = Vector2(0, -21)
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]

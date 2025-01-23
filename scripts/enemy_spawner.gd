@@ -13,7 +13,7 @@ already spawned. Depending on that number, the enemy will be different. For exam
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Globals.combo_succeeded.connect(_on_combo_succeeded)
+	Globals.enemy_died.connect(_on_enemy_died)
 	var enemy = enemy_scene.instantiate()
 	add_child(enemy)
 
@@ -23,8 +23,8 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_combo_succeeded():
+func _on_enemy_died():
 	Globals.defeated_enemies += 1
 	var enemy = enemy_scene.instantiate()
-	add_child(enemy)
+	call_deferred('add_child', enemy)
 	Engine.time_scale += 0.02

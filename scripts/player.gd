@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Area2D
 
 '''
 Player
@@ -61,6 +61,8 @@ const INPUT_THRESHOLD: float = 0.4
 
 @export var arrow_scene: PackedScene
 const ARROW_FPS: float = 19
+
+@export var attack_scene: PackedScene
 #endregion
 
 #region attributes
@@ -84,7 +86,7 @@ func _ready():
 	JUMP_LEVEL = position.y + JUMP_LEVEL
 	#Engine.time_scale = 0.25
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	match current_state:
 		states.DEFAULT:
 			'''
@@ -124,8 +126,7 @@ func _physics_process(delta: float) -> void:
 			elif Input.is_action_just_pressed("uppercut"):
 				current_state = states.UPPERCUT
 				
-			
-			
+
 		states.ACCEPT_QUEUE:
 			'''
 			State accept queue:
@@ -192,8 +193,6 @@ func _physics_process(delta: float) -> void:
 			start_combo()
 			current_state = states.DEFAULT
 				
-
-	move_and_slide()
 #endregion
 
 #region utility functions
@@ -270,6 +269,12 @@ func check_combo() -> bool:
 		arrow_holder.clear()
 		combo_timer.stop()
 		Globals.combo_succeeded.emit()
+		
+		var attack = attack_scene.instantiate()
+		attack.global_position.x = global_position.x + 5
+		attack.global_position.y = global_position.y
+		add_sibling(attack)
+		
 		return true
 	else:
 		return false
@@ -319,8 +324,13 @@ func get_hit_frame(st: states) -> int:
 #endregion
 		
 
+#region signal functions
 func _on_combo_timer_timeout() -> void:
 	print("timeout for combo. Last combo state: ", current_combo)
 	current_combo = []
 	arrow_holder.clear()
 	
+
+func _on_area_entered(area: Area2D) -> void:
+	pass # Replace with function body.
+#endregion

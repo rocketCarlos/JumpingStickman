@@ -12,5 +12,7 @@ var enemy_combo = []
 
 var defeated_enemies = 0
 
-# emitted by player when combo succeeds, recieved by enemy to die
+# emitted by player when combo succeeds
 signal combo_succeeded
+# emmited when an enemy dies
+signal enemy_died

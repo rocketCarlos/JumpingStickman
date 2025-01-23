@@ -4,16 +4,16 @@ MUST HAVE:
 	[x] action stack
 	[x] progress system (accelerating time)
 	[] progress system (hidden arrows)
+	[] replay and score system
 	enemies:
 		[x] enemies show action combos and die when performed
-			[] only at correct height
+			[x] only at correct height
 		[] enemies show feedback while completing their combos
-		[] eniemies spawn and moving system
-		[] enemies can spawn in two different heights
+		[x] eniemies spawn and moving system
 		types:
 			[x] grounded mobs
-			[] flying mobs 
-			[] "slendermans" (has two combos. After first one is completed, it steps back and the other one appears)
+			[x] flying mobs 
+			[x] "slendermans" (has two combos. After first one is completed, it steps back and the other one appears)
 		
 	animations:
 			[x] jumping
