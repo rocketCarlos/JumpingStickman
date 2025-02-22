@@ -46,6 +46,12 @@ enum states {
 	DEAD, # when game over
 }
 
+enum combo_status {
+	CORRECT,
+	INCORRECT,
+	PARTIAL
+}
+
 var current_state = states.DEFAULT
 #endregion
 
@@ -105,8 +111,8 @@ func _process(delta: float) -> void:
 			# ----------------------------
 			# handle actions
 			# ----------------------------
-			# if there are actions in the action stack, take the newest one and  clear the stack
-			# if there's another action registered this frame, it is the used, as is the newest one
+			# if there are actions in the action stack, take the newest one and clear the stack
+			# if there's another action registered this frame, it is used, as it would be the newest one
 			if action_queue.size() > 0:
 				current_state = action_queue[0]
 				action_queue.pop_front()
@@ -138,7 +144,7 @@ func _process(delta: float) -> void:
 				if the combo matches
 			'''
 			if animation.frame == get_hit_frame(playing_action) and current_combo.size() == arrow_holder.arrow_array.size():
-				if check_combo():
+				if check_combo() != combo_status.PARTIAL:
 					action_queue.clear()
 				
 			# jump: player can jump if close enough to the floor
@@ -247,7 +253,6 @@ func add_combo() -> void:
 	else:
 		var i = current_combo.size() - 1
 		arrow_holder.arrow_array[i].update_arrow(arrow_holder.arrow_array[i].fps, arrow_holder.arrow_array[i].direction, "dynamic")
-	
 		
 	print("action added to combo. Current combo: ", current_combo)
 	
@@ -260,7 +265,7 @@ func add_arrow(st: states, type: String):
 	
 	arrow_holder.set_arrows()
 		
-func check_combo() -> bool:
+func check_combo() -> combo_status:
 	# first, check if the combo matches the enemy's combo
 	if current_combo == Globals.enemy_combo:
 		# manage "combo accepted"
@@ -275,9 +280,15 @@ func check_combo() -> bool:
 		attack.global_position.y = global_position.y
 		add_sibling(attack)
 		
-		return true
+		return combo_status.CORRECT
 	else:
-		return false
+		for i in len(current_combo):
+			if current_combo[i] != Globals.enemy_combo[i]:
+				return combo_status.INCORRECT
+		
+		return combo_status.PARTIAL
+			
+			
 		
 # returns the string associated to the animation for the passed state
 func get_action_string(state: states) -> String:
