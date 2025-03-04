@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bmp3r15q7jgc6"]
 
-[ext_resource type="Script" path="res://scripts/arrow_holder.gd" id="1_e1t10"]
+[ext_resource type="Script" uid="uid://fkwqenvgbcvy" path="res://scripts/arrow_holder.gd" id="1_e1t10"]
 
 [node name="ArrowHolder" type="Node2D"]
 script = ExtResource("1_e1t10")

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://ux71d5sbaafd" path="res://assets/sprites/longman.png" id="1_2e22t"]
 [ext_resource type="Texture2D" uid="uid://d1u8jedkf7hw2" path="res://assets/sprites/bat.png" id="1_3lvxl"]
 [ext_resource type="Texture2D" uid="uid://p8b1ry3773sg" path="res://assets/sprites/ufo.png" id="2_2ty6s"]
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="2_723gv"]
+[ext_resource type="Script" uid="uid://b32npf06mdfu1" path="res://scripts/enemy.gd" id="2_723gv"]
 [ext_resource type="Texture2D" uid="uid://b3itwgg4yryha" path="res://assets/sprites/ball.png" id="2_q7oqh"]
 [ext_resource type="Texture2D" uid="uid://vhkb76nqr07e" path="res://assets/sprites/sphere.png" id="2_qcwk2"]
 [ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="3_03ypa"]

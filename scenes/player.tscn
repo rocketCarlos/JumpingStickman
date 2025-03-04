@@ -1,6 +1,6 @@
 [gd_scene load_steps=58 format=3 uid="uid://b6d8tuy0dsqdc"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_0upaq"]
+[ext_resource type="Script" uid="uid://crh22hcscbfox" path="res://scripts/player.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
 [ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="2_m0r6g"]
 [ext_resource type="PackedScene" uid="uid://bmp3r15q7jgc6" path="res://scenes/arrow_holder.tscn" id="3_aq04i"]
