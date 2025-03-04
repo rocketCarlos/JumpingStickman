@@ -407,14 +407,12 @@ metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_t4ntt")
-animation = &"downwards_punch"
+animation = &"jump"
 autoplay = "run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.5)
 shape = SubResource("RectangleShape2D_hw57j")
-
-[node name="Node2D" type="Node2D" parent="."]
 
 [node name="ComboTimer" type="Timer" parent="."]
 wait_time = 0.3
@@ -424,4 +422,5 @@ one_shot = true
 position = Vector2(0, -21)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]

@@ -5,6 +5,7 @@ enum actions {
 	SPIN_KICK,
 	UPPERCUT,
 	DOWNWARDS_PUNCH,
+	JUMP
 }
 
 # current combo that defeats the enemy
