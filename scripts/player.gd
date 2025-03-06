@@ -2,46 +2,27 @@ extends Area2D
 
 '''
 Player
-
-current_state evolution:
-	starts at default. changes to a specific action when input recieved. when animation is playing,
-	a timer starts. until that timer stops, the state remains in the action one. once the timer 
-	timeouts, current_state is accept stack to register inputs. timeout MUST happen before the 
-	animation ends. the state will remain accept_stack until the animation ends and it changes to
-	default again
-	
-combo building:
-	when an action is performed, it is added to the combo array. Once the animation is finished,
-	the combo timer starts. If another one is executed before it timeouts, the action is considered
-	'in combo' with the previous one and thus, added to the combo array. A combo stops if one of 
-	the following happens:
-		1. The combo matches the combo from an enemy. Therefore, the enemy is deleted and the combo
-		array reseted.
-		2. There is no input before the combo timer timeouts. The combo array is reseted and the 
-		player loses the combo streak
-	Once the 'hit frame' of an animation is reached, the combo is checked with the enemy.
 '''
-
+#TODO s:
 '''
-evaluate idea: some mech to 'cancel' the action queue so player doesn't have to wait until all
-animations are ended to start building up the combo again
+think about forcing actions to be executed at max height to avoid visual discrepancy when performing
+attacks agains flying enemies
+
+do something to avoid combos with jumps being ended in the floor and thus not hitting the enemy
 '''
 
 
 #region scene nodes
 @onready var animation = $AnimatedSprite2D
 @onready var combo_timer = $ComboTimer
-@onready var arrow_holder = $ArrowHolder
 #endregion
 
 #region constants
 # distance from the floor at which jumps can be registered and performed
 const JUMP_THRESHOLD: float = 10.0
 
-@export var arrow_scene: PackedScene
-const ARROW_FPS: float = 19
-
 @export var attack_scene: PackedScene
+var attack_instance = null
 #endregion
 
 #region attributes
@@ -66,6 +47,9 @@ func _ready():
 	FLOOR_LEVEL += position.y
 	JUMP_LEVEL = position.y + JUMP_LEVEL
 	#Engine.time_scale = 0.25
+	
+	Globals.combo_succeeded.connect(_on_combo_succeeded)
+	Globals.new_enemy.connect(_on_new_enemy)
 
 func _process(delta: float) -> void:
 	# -- Action input procesing --
@@ -85,10 +69,17 @@ func _process(delta: float) -> void:
 		# uppercut
 		elif Input.is_action_just_pressed('uppercut'):
 			action_queue.push_back(Globals.actions.UPPERCUT)
+	elif attack_instance == null:
+		if animation.frame == get_hit_frame(animation.animation):
+			attack_instance = attack_scene.instantiate()
+			attack_instance.global_position = global_position
+			add_sibling(attack_instance)
+			
 	
 	# -- Action animations management --
 	if not playing_action and action_queue.size() > 0:
 		var next_action = action_queue.pop_front()
+		Globals.do_action.emit(next_action)
 		animation.play(get_action_string(next_action)) 
 		playing_action = true
 		if next_action != Globals.actions.JUMP: 
@@ -98,7 +89,7 @@ func _process(delta: float) -> void:
 		if animation.frame == 2:
 			# jump logic in a function to avoid using await inside _process
 			jump() 
-	elif position.y == FLOOR_LEVEL:
+	elif position.y == FLOOR_LEVEL and not playing_action:
 		animation.play('run')
 		
 #endregion
@@ -141,17 +132,6 @@ func stop_gravity() -> void:
 	if gravity_tween:
 		gravity_tween.kill()
 		gravity_tween = null
-		
-	
-func add_arrow(st: Globals.actions, type: String):
-	var arrow = arrow_scene.instantiate()
-	arrow.direction = get_arrow_string(st)
-	arrow.type = type
-	arrow.fps = ARROW_FPS
-	arrow_holder.arrow_array.append(arrow)
-	
-	arrow_holder.set_arrows()
-		
 
 # returns the string associated to the animation for the passed state
 func get_action_string(attack: Globals.actions) -> String:
@@ -169,30 +149,16 @@ func get_action_string(attack: Globals.actions) -> String:
 		_:
 			return ''
 
-# returns the string associated to the arrow direction that triggers the action
-func get_arrow_string(attack: Globals.actions) -> String:
-	match attack:
-		Globals.actions.FRONT_KICK:
-			return 'right'
-		Globals.actions.SPIN_KICK:
-			return 'left'
-		Globals.actions.UPPERCUT:
-			return 'up'
-		Globals.actions.DOWNWARDS_PUNCH:
-			return 'down'
-		_:
-			return ''
-
 # given the current action, returns the animation frame at which the combo is emmited
-func get_hit_frame(attack: Globals.actions) -> int:
+func get_hit_frame(attack: String) -> int:
 	match attack:
-		Globals.actions.FRONT_KICK:
+		'front_kick':
 			return 5 
-		Globals.actions.SPIN_KICK:
+		'spin_kick':
 			return 7
-		Globals.actions.UPPERCUT:
+		'uppercut':
 			return 5
-		Globals.actions.DOWNWARDS_PUNCH:
+		'downwards_punch':
 			return 8
 		_: 
 			return -1
@@ -201,17 +167,18 @@ func get_hit_frame(attack: Globals.actions) -> int:
 		
 
 #region signal functions
-func _on_combo_timer_timeout() -> void:
-	current_combo = []
-	arrow_holder.clear()
-	
-
 func _on_area_entered(area: Area2D) -> void:
 	pass # Replace with function body.
-#endregion
-
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
 		resume_gravity()
 	playing_action = false
+	
+func _on_combo_succeeded():
+	combo_locked = true
+
+func _on_new_enemy():
+	combo_locked = false
+	attack_instance = null
+#endregion

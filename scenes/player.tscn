@@ -1,9 +1,7 @@
-[gd_scene load_steps=58 format=3 uid="uid://b6d8tuy0dsqdc"]
+[gd_scene load_steps=56 format=3 uid="uid://b6d8tuy0dsqdc"]
 
 [ext_resource type="Script" uid="uid://crh22hcscbfox" path="res://scripts/player.gd" id="1_0upaq"]
 [ext_resource type="Texture2D" uid="uid://ds0mrn7r0hdfs" path="res://assets/sprites/stickman_sheet.png" id="2_ekn3o"]
-[ext_resource type="PackedScene" uid="uid://cx1glasylo6ag" path="res://scenes/arrow.tscn" id="2_m0r6g"]
-[ext_resource type="PackedScene" uid="uid://bmp3r15q7jgc6" path="res://scenes/arrow_holder.tscn" id="3_aq04i"]
 [ext_resource type="PackedScene" uid="uid://wi5524nfjffu" path="res://scenes/attack.tscn" id="3_cilay"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5kip4"]
@@ -401,7 +399,6 @@ size = Vector2(4, 29)
 texture_filter = 3
 collision_mask = 2
 script = ExtResource("1_0upaq")
-arrow_scene = ExtResource("2_m0r6g")
 attack_scene = ExtResource("3_cilay")
 metadata/_edit_group_ = true
 
@@ -417,9 +414,6 @@ shape = SubResource("RectangleShape2D_hw57j")
 [node name="ComboTimer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
-
-[node name="ArrowHolder" parent="." instance=ExtResource("3_aq04i")]
-position = Vector2(0, -21)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

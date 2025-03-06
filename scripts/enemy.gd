@@ -18,16 +18,18 @@ enum types {
 }
 var type: types
 
-var type_combos: Dictionary = {
+var type_combos: Dictionary[types, Array] = {
 	types.MOB1: [Globals.actions.FRONT_KICK, Globals.actions.FRONT_KICK, Globals.actions.SPIN_KICK],
 	types.MOB2: [Globals.actions.UPPERCUT, Globals.actions.SPIN_KICK, Globals.actions.FRONT_KICK],
 	types.MOB3: [Globals.actions.DOWNWARDS_PUNCH, Globals.actions.UPPERCUT, Globals.actions.DOWNWARDS_PUNCH],
-	types.FLYING1: [Globals.actions.SPIN_KICK, Globals.actions.DOWNWARDS_PUNCH, Globals.actions.FRONT_KICK],
-	types.FLYING2: [Globals.actions.FRONT_KICK, Globals.actions.UPPERCUT, Globals.actions.UPPERCUT],
-	types.FLYING3: [Globals.actions.DOWNWARDS_PUNCH, Globals.actions.SPIN_KICK, Globals.actions.UPPERCUT],
+	types.FLYING1: [Globals.actions.JUMP, Globals.actions.DOWNWARDS_PUNCH, Globals.actions.FRONT_KICK],
+	types.FLYING2: [Globals.actions.JUMP, Globals.actions.UPPERCUT, Globals.actions.UPPERCUT],
+	types.FLYING3: [Globals.actions.JUMP, Globals.actions.FRONT_KICK, Globals.actions.SPIN_KICK],
 	types.BIG: [Globals.actions.FRONT_KICK, Globals.actions.UPPERCUT, Globals.actions.SPIN_KICK, Globals.actions.DOWNWARDS_PUNCH],
 }
 var combo: Array
+# current combo progress
+var combo_progress: int = 0
 
 const SPEED: float = -11.0
 const FLYING_HEIGHT: float = -36.5
@@ -39,6 +41,7 @@ const BIG_HEIGHT: float = -7.5
 #region ready and process
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Globals.new_enemy.emit()
 	# choose what enemy can be sent
 	match Globals.defeated_enemies:
 		0:
@@ -67,9 +70,7 @@ func _ready() -> void:
 	Globals.enemy_combo = combo
 	animation = get_string_from_type(type)
 	play()
-	
-	Globals.combo_succeeded.connect(_on_combo_succeeded)
-	
+		
 	for action in combo:
 		var arrow = arrow_scene.instantiate()
 		arrow.direction = get_string_from_action(action)
@@ -78,6 +79,8 @@ func _ready() -> void:
 		arrow_holder.arrow_array.append(arrow)
 	
 	arrow_holder.set_arrows()
+	
+	Globals.do_action.connect(_on_do_actions)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -115,15 +118,23 @@ func get_string_from_action(t: Globals.actions) -> String:
 			return "up"
 		Globals.actions.DOWNWARDS_PUNCH:
 			return "down"
+		Globals.actions.JUMP:
+			return "jump"
 		_:
 			return ""
 #endregion
 
 #region signal functions
-func _on_combo_succeeded() -> void:
-	# show some type of death animation
-	pass
-	
+func _on_do_actions(action: Globals.actions):
+	if action != combo[combo_progress]:
+		Globals.combo_failed.emit()
+		combo_progress = 0
+	else:
+		combo_progress += 1
+		if combo_progress >= combo.size():
+			Globals.combo_succeeded.emit()
+		
+
 func _on_hitboxes_area_entered(area: Area2D) -> void:
 	Globals.enemy_died.emit()
 	queue_free()

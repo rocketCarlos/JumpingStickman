@@ -6,7 +6,7 @@ extends AnimatedSprite2D
 var direction: String = "up":
 	set(value):
 		direction = value
-		if direction not in ["right", "up", "left", "down"]:
+		if direction not in ["right", "up", "left", "down", "jump"]:
 			printerr(direction, " is not a valid direction for the arrow")
 # accepts static, dynamic
 var type: String = "static":
