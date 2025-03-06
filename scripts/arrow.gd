@@ -1,5 +1,7 @@
 extends AnimatedSprite2D
 
+@onready var outline_sprite = $Outline
+
 # accepts right, left, up, right
 var direction: String = "up":
 	set(value):
@@ -13,22 +15,28 @@ var type: String = "static":
 		if type not in ["static", "dynamic"]:
 			printerr(type, " is not a valid type for the arrow")
 
+var outline: String = "none":
+	set(value):
+		outline = value
+		if outline not in ["none", "green", "red", "gold"]:
+			printerr(outline, " is not a valid outline for the arrow")
+
 var fps: int = 19
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	update_arrow(fps, direction, type)
 	
-func update_arrow(speed: float = fps, dir: String = "up", t: String = "static") -> void:
+func update_arrow(speed: float = fps, dir: String = "up", t: String = "static", ol: String = "none") -> void:
 	speed_scale = speed
 	animation = dir
-	
-	'''
-	if t == "static":
-		frame = 10
-	else:
-		frame = 0
-	'''
 	frame = 0
 	if t == "dynamic":
 		play()
+	if ol != 'none':
+		outline_sprite.play(ol)
+		outline_sprite.show()
+	else:
+		outline_sprite.hide()
+		
+	
