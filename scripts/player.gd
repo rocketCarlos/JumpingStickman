@@ -36,7 +36,7 @@ animations are ended to start building up the combo again
 
 #region constants
 # distance from the floor at which jumps can be registered and performed
-const JUMP_THRESHOLD: float = 5.0
+const JUMP_THRESHOLD: float = 10.0
 
 @export var arrow_scene: PackedScene
 const ARROW_FPS: float = 19
@@ -87,19 +87,19 @@ func _process(delta: float) -> void:
 			action_queue.push_back(Globals.actions.UPPERCUT)
 	
 	# -- Action animations management --
-	if action_queue.size() > 0:
-		print(action_queue)
 	if not playing_action and action_queue.size() > 0:
 		var next_action = action_queue.pop_front()
 		animation.play(get_action_string(next_action)) 
 		playing_action = true
 		if next_action != Globals.actions.JUMP: 
-			print('stopping things')
 			stop_jump()
-			stop_gravity()
-	elif animation.animation == 'jump' and animation.frame == 2:
-		# jump logic in a function to avoid using await inside _process
-		jump() 
+			stop_gravity() 
+	elif animation.animation == 'jump':
+		if animation.frame == 2:
+			# jump logic in a function to avoid using await inside _process
+			jump() 
+	elif position.y == FLOOR_LEVEL:
+		animation.play('run')
 		
 #endregion
 
@@ -129,7 +129,6 @@ func resume_gravity() -> void:
 		gravity_tween.tween_property(self, 'position', Vector2(position.x, FLOOR_LEVEL), falling_time)
 		
 		await gravity_tween.finished
-		animation.play('run') 
 		gravity_tween = null
 	
 
@@ -139,7 +138,6 @@ func stop_jump() -> void:
 		jump_tween = null
 
 func stop_gravity() -> void:
-	print('stop grav')
 	if gravity_tween:
 		gravity_tween.kill()
 		gravity_tween = null
@@ -155,9 +153,6 @@ func add_arrow(st: Globals.actions, type: String):
 	arrow_holder.set_arrows()
 		
 
-			
-			
-		
 # returns the string associated to the animation for the passed state
 func get_action_string(attack: Globals.actions) -> String:
 	match attack:
@@ -207,7 +202,6 @@ func get_hit_frame(attack: Globals.actions) -> int:
 
 #region signal functions
 func _on_combo_timer_timeout() -> void:
-	print('timeout for combo. Last combo state: ', current_combo)
 	current_combo = []
 	arrow_holder.clear()
 	
@@ -221,6 +215,3 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
 		resume_gravity()
 	playing_action = false
-	
-	if position.y == FLOOR_LEVEL:
-		animation.play('run')
