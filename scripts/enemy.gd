@@ -125,14 +125,24 @@ func get_string_from_action(t: Globals.actions) -> String:
 #endregion
 
 #region signal functions
+var interrupt = false
 func _on_do_action(action: Globals.actions):
 	if action != combo[combo_progress]:
 		Globals.combo_failed.emit()
+		arrow_holder.arrow_array[combo_progress].change_outline('red')
 		combo_progress = 0
+		
+		await get_tree().create_timer(1).timeout
+		
+		for arrow in arrow_holder.arrow_array:
+			arrow.change_outline('')
 	else:
+		arrow_holder.arrow_array[combo_progress].change_outline('green')
 		combo_progress += 1
 		if combo_progress >= combo.size():
 			Globals.combo_succeeded.emit()
+			for arrow in arrow_holder.arrow_array:
+				arrow.change_outline('gold')
 		
 
 func _on_hitboxes_area_entered(area: Area2D) -> void:
@@ -141,4 +151,6 @@ func _on_hitboxes_area_entered(area: Area2D) -> void:
 	
 func _on_combo_timeout() -> void:
 	combo_progress = 0
+	for arrow in arrow_holder.arrow_array:
+			arrow.change_outline('')
 #endregion

@@ -39,4 +39,22 @@ func update_arrow(speed: float = fps, dir: String = "up", t: String = "static", 
 	else:
 		outline_sprite.hide()
 		
-	
+
+#region utility functions to be used by other nodes that hold arrows
+func change_outline(color: String) -> void:
+	match color:
+		"green":
+			outline_sprite.show()
+			outline_sprite.play('green')
+		"gold":
+			outline_sprite.show()
+			outline_sprite.play('gold')
+		"red":
+			outline_sprite.show()
+			outline_sprite.play('red')
+		_:
+			outline_sprite.hide()
+
+func light() -> void:
+	pass
+#endregion

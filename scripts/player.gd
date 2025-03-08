@@ -3,6 +3,13 @@ extends Area2D
 '''
 Player
 '''
+#TODO:
+'''
+combo checking rework: when pressing action: instantly show feedback that it has been pressed by
+outlining green the arrow. To do so, emit the do_action signal when updating the action queue. Also,
+cancel the combo in the very moment the wrong key is selected, not when the current action ends.
+Then, show feedback of action being made by showing arrow animation.
+'''
 
 
 #region scene nodes
@@ -170,20 +177,17 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
 		resume_gravity()
 	
-	if animation.animation in Globals.actions.keys().map(func(key): return get_action_string(Globals.actions[key])):
+	if (animation.animation in Globals.actions
+		.keys()
+		.map(func(key): return get_action_string(Globals.actions[key]))
+		and not combo_locked):
 		combo_timer.start()
-		print('start')
-	
-	'''for value in Globals.actions.values():
-		if get_action_string(value) == animation.animation:
-			combo_timer.start()
-			print('start')'''
-		
 		
 	playing_action = false
 	
 func _on_combo_succeeded():
 	combo_locked = true
+	combo_timer.stop()
 	
 func _on_combo_failed():
 	# cancel animations and clear action queue
