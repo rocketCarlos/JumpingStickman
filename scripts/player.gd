@@ -170,21 +170,14 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
 		resume_gravity()
 	
-	'''print(Globals.actions.values())
-	print(get_action_string(0), ' ', 0 in Globals.actions.values())
-	print(get_action_string(1), ' ', 1 in Globals.actions.values())
-	print(get_action_string(2), ' ', 2 in Globals.actions.values())
-	print(get_action_string(3), ' ', 3 in Globals.actions.values())
-	print(get_action_string(4), ' ', 4 in Globals.actions.values())
-	print(Globals.actions.values().map(func(value): get_action_string(value)))
-	if animation.animation in Globals.actions.keys().map(func(key): get_action_string(Globals.actions[key])):
+	if animation.animation in Globals.actions.keys().map(func(key): return get_action_string(Globals.actions[key])):
 		combo_timer.start()
-		print('start')'''
+		print('start')
 	
-	for value in Globals.actions.values():
+	'''for value in Globals.actions.values():
 		if get_action_string(value) == animation.animation:
 			combo_timer.start()
-			print('start')
+			print('start')'''
 		
 		
 	playing_action = false
