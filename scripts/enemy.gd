@@ -80,8 +80,8 @@ func _ready() -> void:
 	
 	arrow_holder.set_arrows()
 	
-	Globals.do_action.connect(_on_do_actions)
-	
+	Globals.do_action.connect(_on_do_action)
+	Globals.combo_timeout.connect(_on_combo_timeout)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -125,7 +125,7 @@ func get_string_from_action(t: Globals.actions) -> String:
 #endregion
 
 #region signal functions
-func _on_do_actions(action: Globals.actions):
+func _on_do_action(action: Globals.actions):
 	if action != combo[combo_progress]:
 		Globals.combo_failed.emit()
 		combo_progress = 0
@@ -138,4 +138,7 @@ func _on_do_actions(action: Globals.actions):
 func _on_hitboxes_area_entered(area: Area2D) -> void:
 	Globals.enemy_died.emit()
 	queue_free()
+	
+func _on_combo_timeout() -> void:
+	combo_progress = 0
 #endregion

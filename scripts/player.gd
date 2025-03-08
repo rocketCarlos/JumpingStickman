@@ -3,13 +3,6 @@ extends Area2D
 '''
 Player
 '''
-#TODO s:
-'''
-think about forcing actions to be executed at max height to avoid visual discrepancy when performing
-attacks agains flying enemies
-
-do something to avoid combos with jumps being ended in the floor and thus not hitting the enemy
-'''
 
 
 #region scene nodes
@@ -49,6 +42,7 @@ func _ready():
 	#Engine.time_scale = 0.25
 	
 	Globals.combo_succeeded.connect(_on_combo_succeeded)
+	Globals.combo_failed.connect(_on_combo_failed)
 	Globals.new_enemy.connect(_on_new_enemy)
 
 func _process(delta: float) -> void:
@@ -78,10 +72,13 @@ func _process(delta: float) -> void:
 	
 	# -- Action animations management --
 	if not playing_action and action_queue.size() > 0:
+		combo_timer.stop()
 		var next_action = action_queue.pop_front()
-		Globals.do_action.emit(next_action)
+		# NOTE: play animation before emmiting signal so that animation can be
+		# canceled if action is incorrect!
 		animation.play(get_action_string(next_action)) 
 		playing_action = true
+		Globals.do_action.emit(next_action)
 		if next_action != Globals.actions.JUMP: 
 			stop_jump()
 			stop_gravity() 
@@ -100,9 +97,8 @@ func jump() -> void:
 	# tween for jump
 	jump_tween = get_tree().create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 	jump_tween.tween_property(self, 'position', Vector2(position.x, JUMP_LEVEL), 0.25)
-	# set to false to enable animation cancel while jumping
-	playing_action = false
 	await jump_tween.finished
+	playing_action = false
 	jump_tween = null
 	resume_gravity()
 
@@ -173,12 +169,42 @@ func _on_area_entered(area: Area2D) -> void:
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
 		resume_gravity()
+	
+	'''print(Globals.actions.values())
+	print(get_action_string(0), ' ', 0 in Globals.actions.values())
+	print(get_action_string(1), ' ', 1 in Globals.actions.values())
+	print(get_action_string(2), ' ', 2 in Globals.actions.values())
+	print(get_action_string(3), ' ', 3 in Globals.actions.values())
+	print(get_action_string(4), ' ', 4 in Globals.actions.values())
+	print(Globals.actions.values().map(func(value): get_action_string(value)))
+	if animation.animation in Globals.actions.keys().map(func(key): get_action_string(Globals.actions[key])):
+		combo_timer.start()
+		print('start')'''
+	
+	for value in Globals.actions.values():
+		if get_action_string(value) == animation.animation:
+			combo_timer.start()
+			print('start')
+		
+		
 	playing_action = false
 	
 func _on_combo_succeeded():
 	combo_locked = true
+	
+func _on_combo_failed():
+	# cancel animations and clear action queue
+	action_queue.clear()
+	playing_action = false
+	if position.y == FLOOR_LEVEL:
+		animation.play('run')
+	else:
+		animation.play("fall")
 
 func _on_new_enemy():
 	combo_locked = false
 	attack_instance = null
+	
+func _on_combo_timer_timeout() -> void:
+	Globals.combo_timeout.emit()
 #endregion
