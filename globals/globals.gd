@@ -15,6 +15,8 @@ var defeated_enemies = 0
 
 # emitted by player when an action is executed
 signal do_action(action: actions)
+# emmited by player when an attack animation starts to make the arrow show progress
+signal start_arrow()
 # emitted by mob when combo succeeds
 signal combo_succeeded
 # emitted by mob when combo fails

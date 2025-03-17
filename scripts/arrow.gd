@@ -55,6 +55,9 @@ func change_outline(color: String) -> void:
 		_:
 			outline_sprite.hide()
 
-func light() -> void:
-	pass
+func do_animation() -> void:
+	play()
+	
+func go_off() -> void:
+	stop()
 #endregion

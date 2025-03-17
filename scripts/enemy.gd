@@ -30,6 +30,7 @@ var type_combos: Dictionary[types, Array] = {
 var combo: Array
 # current combo progress
 var combo_progress: int = 0
+var animation_progress: int = 0
 
 const SPEED: float = -11.0
 const FLYING_HEIGHT: float = -36.5
@@ -75,13 +76,14 @@ func _ready() -> void:
 		var arrow = arrow_scene.instantiate()
 		arrow.direction = get_string_from_action(action)
 		arrow.type = "static"
-		arrow.fps = 5
+		arrow.fps = 19
 		arrow_holder.arrow_array.append(arrow)
 	
 	arrow_holder.set_arrows()
 	
 	Globals.do_action.connect(_on_do_action)
 	Globals.combo_timeout.connect(_on_combo_timeout)
+	Globals.start_arrow.connect(_on_start_arrow)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -131,11 +133,13 @@ func _on_do_action(action: Globals.actions):
 		Globals.combo_failed.emit()
 		arrow_holder.arrow_array[combo_progress].change_outline('red')
 		combo_progress = 0
+		animation_progress = 0
 		
 		await get_tree().create_timer(1).timeout
 		
 		for arrow in arrow_holder.arrow_array:
 			arrow.change_outline('')
+			arrow.go_off()
 	else:
 		arrow_holder.arrow_array[combo_progress].change_outline('green')
 		combo_progress += 1
@@ -151,6 +155,12 @@ func _on_hitboxes_area_entered(area: Area2D) -> void:
 	
 func _on_combo_timeout() -> void:
 	combo_progress = 0
+	animation_progress = 0
 	for arrow in arrow_holder.arrow_array:
 			arrow.change_outline('')
+			arrow.go_off()
+			
+func _on_start_arrow() -> void:
+	arrow_holder.arrow_array[animation_progress].do_animation()
+	animation_progress += 1
 #endregion

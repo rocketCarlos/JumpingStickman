@@ -5,10 +5,8 @@ Player
 '''
 #TODO:
 '''
-combo checking rework: when pressing action: instantly show feedback that it has been pressed by
-outlining green the arrow. To do so, emit the do_action signal when updating the action queue. Also,
-cancel the combo in the very moment the wrong key is selected, not when the current action ends.
-Then, show feedback of action being made by showing arrow animation.
+try to isolate a bug where a combo would very rarely not build up correctly. Instead, arrows would
+light up and not go off after combo timeout
 '''
 
 
@@ -58,34 +56,36 @@ func _process(delta: float) -> void:
 		# jump: player can jump if close enough to the floor
 		if Input.is_action_just_pressed('jump') and abs(position.y - FLOOR_LEVEL) < JUMP_THRESHOLD:
 			action_queue.push_back(Globals.actions.JUMP)
+			Globals.do_action.emit(Globals.actions.JUMP)
 		# front kick
 		elif Input.is_action_just_pressed('front_kick'):
 			action_queue.push_back(Globals.actions.FRONT_KICK)
+			Globals.do_action.emit(Globals.actions.FRONT_KICK)
 		# spin kick
 		elif Input.is_action_just_pressed('spin_kick'):
 			action_queue.push_back(Globals.actions.SPIN_KICK)
+			Globals.do_action.emit(Globals.actions.SPIN_KICK)
 		# downwards punch
 		elif Input.is_action_just_pressed('downwards_punch'):
 			action_queue.push_back(Globals.actions.DOWNWARDS_PUNCH)
+			Globals.do_action.emit(Globals.actions.DOWNWARDS_PUNCH)
 		# uppercut
 		elif Input.is_action_just_pressed('uppercut'):
 			action_queue.push_back(Globals.actions.UPPERCUT)
-	elif attack_instance == null:
-		if animation.frame == get_hit_frame(animation.animation):
+			Globals.do_action.emit(Globals.actions.UPPERCUT)
+	elif attack_instance == null: # if combo locked, manage attack
+		if animation.frame == get_hit_frame(animation.animation) and action_queue.size() == 0:
 			attack_instance = attack_scene.instantiate()
 			attack_instance.global_position = global_position
 			add_sibling(attack_instance)
-			
 	
 	# -- Action animations management --
 	if not playing_action and action_queue.size() > 0:
 		combo_timer.stop()
 		var next_action = action_queue.pop_front()
-		# NOTE: play animation before emmiting signal so that animation can be
-		# canceled if action is incorrect!
 		animation.play(get_action_string(next_action)) 
 		playing_action = true
-		Globals.do_action.emit(next_action)
+		Globals.start_arrow.emit()
 		if next_action != Globals.actions.JUMP: 
 			stop_jump()
 			stop_gravity() 
