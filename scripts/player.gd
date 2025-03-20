@@ -171,7 +171,7 @@ func get_hit_frame(attack: String) -> int:
 
 #region signal functions
 func _on_area_entered(area: Area2D) -> void:
-	pass # Replace with function body.
+	print('touch')
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
@@ -197,6 +197,7 @@ func _on_combo_failed():
 		animation.play('run')
 	else:
 		animation.play("fall")
+		resume_gravity()
 
 func _on_new_enemy():
 	combo_locked = false

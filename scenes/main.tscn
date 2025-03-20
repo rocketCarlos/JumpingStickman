@@ -1,14 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://x7vfjb13523i"]
+[gd_scene load_steps=7 format=3 uid="uid://x7vfjb13523i"]
 
+[ext_resource type="Script" uid="uid://c5rew4p0ai3pn" path="res://scripts/main.gd" id="1_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://dd7vwc2u2lgko" path="res://assets/sprites/background_sketch.png" id="1_vc7uq"]
 [ext_resource type="PackedScene" uid="uid://b6d8tuy0dsqdc" path="res://scenes/player.tscn" id="2_iante"]
 [ext_resource type="PackedScene" uid="uid://cyqvllsr8bwn6" path="res://scenes/enemy_spawner.tscn" id="3_ukwvw"]
+[ext_resource type="PackedScene" uid="uid://cua4q8tbevows" path="res://scenes/play_button.tscn" id="5_tefeu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l61yf"]
 size = Vector2(31.5, 90)
 
 [node name="Main" type="Node2D"]
 texture_filter = 3
+script = ExtResource("1_tbgi4")
 
 [node name="Bakcground" type="Sprite2D" parent="."]
 texture = ExtResource("1_vc7uq")
@@ -26,3 +29,6 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldLimit"]
 shape = SubResource("RectangleShape2D_l61yf")
+
+[node name="Play" parent="." instance=ExtResource("5_tefeu")]
+position = Vector2(72, 43)
