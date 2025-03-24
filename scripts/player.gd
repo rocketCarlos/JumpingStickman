@@ -171,7 +171,7 @@ func get_hit_frame(attack: String) -> int:
 
 #region signal functions
 func _on_area_entered(area: Area2D) -> void:
-	print('touch')
+	Globals.game_end.emit()
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
@@ -198,6 +198,11 @@ func _on_combo_failed():
 	else:
 		animation.play("fall")
 		resume_gravity()
+	
+	# after failing, can't enter more actions before cooldown
+	combo_locked = true
+	await get_tree().create_timer(Globals.FAIL_COOLDOWN).timeout
+	combo_locked = false
 
 func _on_new_enemy():
 	combo_locked = false

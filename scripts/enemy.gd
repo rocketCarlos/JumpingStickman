@@ -135,7 +135,7 @@ func _on_do_action(action: Globals.actions):
 		combo_progress = 0
 		animation_progress = 0
 		
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(Globals.FAIL_COOLDOWN).timeout
 		
 		for arrow in arrow_holder.arrow_array:
 			arrow.change_outline('')

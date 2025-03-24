@@ -2,15 +2,6 @@ extends Node2D
 
 @export var enemy_scene: PackedScene
 
-'''
-spawn idea: mob has a function called "initialize" that takes one argument: the number of mobs
-already spawned. Depending on that number, the enemy will be different. For example:
-	first 20 enemies are normal
-	then some slendermans come
-	then some enemies have question mark combos
-	etc
-'''
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Globals.enemy_died.connect(_on_enemy_died)

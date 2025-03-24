@@ -8,15 +8,21 @@ enum actions {
 	JUMP
 }
 
+# seconds player must wait before entering another action after the previous failed
+const FAIL_COOLDOWN = 1
+
 # current combo that defeats the enemy
 var enemy_combo = []
 
 var defeated_enemies = 0
 
+signal game_start
+signal game_end
+
 # emitted by player when an action is executed
 signal do_action(action: actions)
 # emmited by player when an attack animation starts to make the arrow show progress
-signal start_arrow()
+signal start_arrow
 # emitted by mob when combo succeeds
 signal combo_succeeded
 # emitted by mob when combo fails
