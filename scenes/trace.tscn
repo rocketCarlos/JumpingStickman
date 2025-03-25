@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1q15p7ex6dh8"]
+
+[ext_resource type="Script" uid="uid://bn5fibpgxrm5q" path="res://scripts/trace.gd" id="1_qw6h6"]
+
+[node name="Trace" type="Sprite2D"]
+script = ExtResource("1_qw6h6")

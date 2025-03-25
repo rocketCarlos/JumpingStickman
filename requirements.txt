@@ -4,11 +4,11 @@ MUST HAVE:
 	[x] action stack
 	[x] progress system (accelerating time)
 	[] progress system (hidden arrows)
-	[] replay and score system
+	[x] replay
+	[x] score system
 	enemies:
 		[x] enemies show action combos and die when performed
-			[x] only at correct height
-		[] enemies show feedback while completing their combos
+		[x] enemies show feedback while completing their combos
 		[x] eniemies spawn and moving system
 		types:
 			[x] grounded mobs
@@ -25,9 +25,9 @@ MUST HAVE:
 			
 
 NICE TO HAVE:
-	[] arrow holder shows arrows smoothly when added
+	[?] arrow holder shows arrows smoothly when added
 	[] extra effects to animations, like colors and screen shakes
-	[] improve arrow visuals when a combo succeeds
+	[x] improve arrow visuals when a combo succeeds
 	[] infinite parallax layer background
 	[] torso and legs decopuling
-	[] enemies show bright arrows
+	[x] enemies show bright arrows

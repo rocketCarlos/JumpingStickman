@@ -5,8 +5,7 @@ Player
 '''
 #TODO:
 '''
-try to isolate a bug where a combo would very rarely not build up correctly. Instead, arrows would
-light up and not go off after combo timeout
+add semi-transparent "trace" for player movements as time accelerates
 '''
 
 
@@ -14,6 +13,8 @@ light up and not go off after combo timeout
 @onready var animation = $AnimatedSprite2D
 @onready var combo_timer = $ComboTimer
 #endregion
+
+@export var scene_trace: PackedScene
 
 #region constants
 # distance from the floor at which jumps can be registered and performed
@@ -95,7 +96,14 @@ func _process(delta: float) -> void:
 			jump() 
 	elif position.y == FLOOR_LEVEL and not playing_action:
 		animation.play('run')
-		
+	
+	# add trace
+	var instance_trace = scene_trace.instantiate()
+	instance_trace.global_position = global_position
+	instance_trace.intensity = (sqrt(Engine.time_scale)-1)/(sqrt(Engine.time_scale)+0.5)
+	instance_trace.texture = animation.sprite_frames.get_frame_texture(animation.animation, animation.frame)
+	add_sibling(instance_trace)
+	
 #endregion
 
 #region utility functions

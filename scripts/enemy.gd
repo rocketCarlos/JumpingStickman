@@ -32,7 +32,7 @@ var combo: Array
 var combo_progress: int = 0
 var animation_progress: int = 0
 
-const SPEED: float = -11.0
+const SPEED: float = -15.0
 const FLYING_HEIGHT: float = -36.5
 const BIG_HEIGHT: float = -7.5
 
