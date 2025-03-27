@@ -3,7 +3,7 @@ MUST HAVE:
 	[x] gravity system
 	[x] action stack
 	[x] progress system (accelerating time)
-	[] progress system (hidden arrows)
+	[X] progress system (hidden arrows)
 	[x] replay
 	[x] score system
 	enemies:
@@ -25,9 +25,16 @@ MUST HAVE:
 			
 
 NICE TO HAVE:
-	[?] arrow holder shows arrows smoothly when added
-	[] extra effects to animations, like colors and screen shakes
 	[x] improve arrow visuals when a combo succeeds
+	[x] enemies show bright arrows
+	[] point combo build up, like extra points for not failing the movement combos
+	[] speed management based on combo points. steps rather than smoothly adding speed
+	[] trace based on combo points rather than in speed
+	[] music
+	[] sfx
+
+CHEFF KISS:
+	[] extra effects to animations, like colors and screen shakes
 	[] infinite parallax layer background
 	[] torso and legs decopuling
-	[x] enemies show bright arrows
+	

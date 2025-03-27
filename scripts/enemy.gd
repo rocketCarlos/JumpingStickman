@@ -74,7 +74,12 @@ func _ready() -> void:
 		
 	for action in combo:
 		var arrow = arrow_scene.instantiate()
-		arrow.direction = get_string_from_action(action)
+		
+		if Globals.defeated_enemies > 25 and randf() < inverse_lerp(25, 120, Globals.defeated_enemies):
+			arrow.direction = "?"
+		else:
+			arrow.direction = get_string_from_action(action)
+			
 		arrow.type = "static"
 		arrow.fps = 19
 		arrow_holder.arrow_array.append(arrow)
@@ -127,7 +132,6 @@ func get_string_from_action(t: Globals.actions) -> String:
 #endregion
 
 #region signal functions
-var interrupt = false
 func _on_do_action(action: Globals.actions):
 	if action != combo[combo_progress]:
 		Globals.combo_failed.emit()
