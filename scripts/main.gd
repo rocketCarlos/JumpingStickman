@@ -19,6 +19,8 @@ func _ready() -> void:
 	
 
 func _on_game_start() -> void:
+	Engine.time_scale = 1
+	
 	instance_player = scene_player.instantiate()
 	instance_player.position = POS_PLAYER - Vector2(35, 0)
 	var player_tween = get_tree().create_tween()
@@ -30,7 +32,7 @@ func _on_game_start() -> void:
 	
 	var score_tween = get_tree().create_tween()
 	score_tween.tween_property(label_score, "position", POS_SCORE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	score = 0
+	set_score(0)
 	
 func _on_game_end() -> void:
 	instance_player.queue_free()
@@ -38,5 +40,8 @@ func _on_game_end() -> void:
 	button_play.restart()
 	
 func _on_enemy_died() -> void:
-	score += 1
-	label_score.text = str(score)
+	set_score(score+1)
+
+func set_score(value: int) -> void:
+	score = value
+	label_score.text = str(value)

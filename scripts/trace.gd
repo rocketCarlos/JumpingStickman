@@ -1,11 +1,12 @@
 extends Sprite2D
 
 var intensity = 0 # BETWEEN 0 AND 1
-const MAX_OFFSET = -100
+const VAR_OFFSET = -20
+const MIN_OFFSET = -10
 
 func _ready() -> void:
 	var tween = get_tree().create_tween()
-	tween.tween_property(self, "position", position + Vector2(intensity*MAX_OFFSET, 0) , 0.2)
+	tween.tween_property(self, "position", position + Vector2(intensity*VAR_OFFSET + MIN_OFFSET, 0) , 0.2)
 	var r = 1
 	var g = 1
 	var b = 1
