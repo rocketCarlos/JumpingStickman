@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx4uubrxrp4fi"]
+
+[ext_resource type="FontFile" uid="uid://dpply5888d0ah" path="res://assets/WenderFont1.ttf" id="1_ft0ah"]
+[ext_resource type="Script" uid="uid://dk2g5he7iyucy" path="res://combo_holder.gd" id="2_p4doa"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_33opf"]
+font = ExtResource("1_ft0ah")
+
+[sub_resource type="LabelSettings" id="LabelSettings_06v7y"]
+font = ExtResource("1_ft0ah")
+
+[node name="ComboHolder" type="Label"]
+texture_filter = 3
+offset_right = 64.0
+offset_bottom = 12.0
+text = "COMBO x "
+label_settings = SubResource("LabelSettings_33opf")
+script = ExtResource("2_p4doa")
+
+[node name="Combo" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.1
+offset_top = -6.0
+offset_right = 73.1
+offset_bottom = 6.0
+grow_vertical = 2
+text = "1"
+label_settings = SubResource("LabelSettings_06v7y")
