@@ -5,9 +5,11 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_33opf"]
 font = ExtResource("1_ft0ah")
+font_size = 128
 
 [sub_resource type="LabelSettings" id="LabelSettings_06v7y"]
 font = ExtResource("1_ft0ah")
+font_size = 128
 
 [node name="ComboHolder" type="Label"]
 texture_filter = 3
@@ -18,14 +20,15 @@ label_settings = SubResource("LabelSettings_33opf")
 script = ExtResource("2_p4doa")
 
 [node name="Combo" type="Label" parent="."]
+texture_filter = 4
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 64.1
-offset_top = -6.0
-offset_right = 73.1
-offset_bottom = 6.0
+offset_left = 512.0
+offset_top = -48.0
+offset_right = 584.0
+offset_bottom = 48.0
 grow_vertical = 2
 text = "1"
 label_settings = SubResource("LabelSettings_06v7y")
