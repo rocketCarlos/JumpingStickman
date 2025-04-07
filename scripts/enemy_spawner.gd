@@ -18,4 +18,4 @@ func _on_enemy_died():
 	Globals.defeated_enemies += 1
 	var enemy = enemy_scene.instantiate()
 	call_deferred('add_child', enemy)
-	Engine.time_scale += 0.02
+	Engine.time_scale = 1 + (0.02)*Globals.combo

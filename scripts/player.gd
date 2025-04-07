@@ -77,7 +77,7 @@ func _process(delta: float) -> void:
 	elif attack_instance == null: # if combo locked, manage attack
 		if animation.frame == get_hit_frame(animation.animation) and action_queue.size() == 0:
 			attack_instance = attack_scene.instantiate()
-			attack_instance.global_position = global_position
+			attack_instance.position = position
 			add_sibling(attack_instance)
 	
 	# -- Action animations management --
@@ -218,4 +218,6 @@ func _on_new_enemy():
 	
 func _on_combo_timer_timeout() -> void:
 	Globals.combo_timeout.emit()
+	Globals.combo = 0
+	Globals.combo_updated.emit()
 #endregion
