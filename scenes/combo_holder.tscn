@@ -13,8 +13,8 @@ font_size = 128
 
 [node name="ComboHolder" type="Label"]
 texture_filter = 3
-offset_right = 64.0
-offset_bottom = 12.0
+offset_right = 512.0
+offset_bottom = 96.0
 text = "COMBO x "
 label_settings = SubResource("LabelSettings_33opf")
 script = ExtResource("2_p4doa")
@@ -32,3 +32,8 @@ offset_bottom = 48.0
 grow_vertical = 2
 text = "1"
 label_settings = SubResource("LabelSettings_06v7y")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

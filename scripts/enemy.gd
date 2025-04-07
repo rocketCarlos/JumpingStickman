@@ -135,6 +135,8 @@ func get_string_from_action(t: Globals.actions) -> String:
 func _on_do_action(action: Globals.actions):
 	if action != combo[combo_progress]:
 		Globals.combo_failed.emit()
+		Globals.combo = 0
+		Globals.combo_updated.emit()
 		arrow_holder.arrow_array[combo_progress].change_outline('red')
 		combo_progress = 0
 		animation_progress = 0
@@ -149,6 +151,8 @@ func _on_do_action(action: Globals.actions):
 		combo_progress += 1
 		if combo_progress >= combo.size():
 			Globals.combo_succeeded.emit()
+			Globals.combo += 1
+			Globals.combo_updated.emit()
 			for arrow in arrow_holder.arrow_array:
 				arrow.change_outline('gold')
 		

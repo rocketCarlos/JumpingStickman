@@ -42,7 +42,7 @@ func _on_game_end() -> void:
 	button_play.restart()
 	
 func _on_enemy_died() -> void:
-	set_score(score+1)
+	set_score(score + 1 + int(Globals.combo/10))
 
 func set_score(value: int) -> void:
 	score = value

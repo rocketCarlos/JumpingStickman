@@ -16,6 +16,8 @@ var enemy_combo = []
 
 var defeated_enemies = 0
 
+var combo = 0
+
 signal game_start
 signal game_end
 
@@ -33,3 +35,5 @@ signal combo_timeout
 signal enemy_died
 # emitted when an enemy is spawned
 signal new_enemy
+# emmited to update the combo
+signal combo_updated

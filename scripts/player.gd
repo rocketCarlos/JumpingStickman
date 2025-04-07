@@ -218,4 +218,6 @@ func _on_new_enemy():
 	
 func _on_combo_timer_timeout() -> void:
 	Globals.combo_timeout.emit()
+	Globals.combo = 0
+	Globals.combo_updated.emit()
 #endregion

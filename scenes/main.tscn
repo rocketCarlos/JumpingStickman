@@ -62,6 +62,7 @@ label_settings = SubResource("LabelSettings_o6xl0")
 horizontal_alignment = 1
 
 [node name="ComboHolder" parent="UIHolder" instance=ExtResource("7_o6xl0")]
+visible = false
 layout_mode = 1
 offset_left = 78.0
 offset_top = 40.0
