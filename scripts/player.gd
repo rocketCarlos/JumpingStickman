@@ -8,6 +8,7 @@ Player
 #region scene nodes
 @onready var animation = $AnimatedSprite2D
 @onready var combo_timer = $ComboTimer
+@onready var defeated_sprite = $DefeatedSprite
 #endregion
 
 @export var scene_trace: PackedScene
@@ -35,6 +36,9 @@ var current_combo: Array[Globals.actions] = [] # holds the current combo values
 var playing_action: bool = false
 # True if the combo succeeded to avoid more action inputs
 var combo_locked: bool = false
+# true when the last action comlpleted a combo
+# used to decide whether to start or no the combo timer
+var last_action_killed: bool = false
 #endregion
 
 #region ready and process
@@ -170,12 +174,28 @@ func get_hit_frame(attack: String) -> int:
 		_: 
 			return -1
 			
+			
+func start_defeated_animation() -> void:
+	animation.hide()
+	defeated_sprite.show()
+	
+	for i in range(7):
+		await get_tree().create_timer(0.5).timeout
+		if defeated_sprite.modulate == Color.WHITE:
+			defeated_sprite.modulate = Color.RED
+		else:
+			defeated_sprite.modulate = Color.WHITE
+			
+	Globals.game_end.emit()
+	
 #endregion
 		
 
 #region signal functions
 func _on_area_entered(area: Area2D) -> void:
-	Globals.game_end.emit()
+	Globals.player_defeated_animation.emit()
+	start_defeated_animation()
+
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animation.animation != 'jump':
@@ -184,13 +204,19 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if (animation.animation in Globals.actions
 		.keys()
 		.map(func(key): return get_action_string(Globals.actions[key]))
-		and not combo_locked):
-		combo_timer.start()
+		and not (combo_locked or last_action_killed)):
+			# do not trigger combo if last action killed, as next attacks 
+			# should not be part of the same combo
+			combo_timer.start()
 		
 	playing_action = false
+	if action_queue.size() == 0:
+		# reset when no more animations are left to be played
+		last_action_killed = false
 	
 func _on_combo_succeeded():
 	combo_locked = true
+	last_action_killed = true
 	combo_timer.stop()
 	
 func _on_combo_failed():

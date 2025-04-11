@@ -23,7 +23,7 @@ signal game_end
 
 # emitted by player when an action is executed
 signal do_action(action: actions)
-# emmited by player when an attack animation starts to make the arrow show progress
+# emitted by player when an attack animation starts to make the arrow show progress
 signal start_arrow
 # emitted by mob when combo succeeds
 signal combo_succeeded
@@ -35,5 +35,7 @@ signal combo_timeout
 signal enemy_died
 # emitted when an enemy is spawned
 signal new_enemy
-# emmited to update the combo
+# emitted to update the combo
 signal combo_updated
+# emitted to manage player defeated animation
+signal player_defeated_animation()

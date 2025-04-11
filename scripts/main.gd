@@ -18,7 +18,7 @@ func _ready() -> void:
 	Globals.game_start.connect(_on_game_start)
 	Globals.game_end.connect(_on_game_end)
 	Globals.enemy_died.connect(_on_enemy_died)
-	
+	Globals.player_defeated_animation.connect(_on_player_defeated_animation)
 
 func _on_game_start() -> void:
 	Engine.time_scale = 1
@@ -38,7 +38,6 @@ func _on_game_start() -> void:
 	
 func _on_game_end() -> void:
 	instance_player.queue_free()
-	instance_spawner.queue_free()
 	button_play.restart()
 	
 func _on_enemy_died() -> void:
@@ -47,3 +46,6 @@ func _on_enemy_died() -> void:
 func set_score(value: int) -> void:
 	score = value
 	label_score.text = str(value)
+
+func _on_player_defeated_animation() -> void:
+	instance_spawner.queue_free()
