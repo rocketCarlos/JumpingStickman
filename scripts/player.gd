@@ -3,10 +3,6 @@ extends Area2D
 '''
 Player
 '''
-#TODO:
-'''
-add semi-transparent "trace" for player movements as time accelerates
-'''
 
 
 #region scene nodes

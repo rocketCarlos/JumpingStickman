@@ -24,12 +24,14 @@ scene_spawner = ExtResource("3_ukwvw")
 [node name="Game" type="Node2D" parent="."]
 scale = Vector2(12, 12)
 
-[node name="Bakcground" type="Sprite2D" parent="Game"]
+[node name="Background" type="Sprite2D" parent="Game"]
 texture = ExtResource("1_vc7uq")
 centered = false
 
 [node name="WorldLimit" type="Area2D" parent="Game"]
-position = Vector2(215, 45)
+position = Vector2(-20.4167, 45.1667)
+collision_layer = 0
+collision_mask = 2
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WorldLimit"]
@@ -68,3 +70,5 @@ offset_left = 78.0
 offset_top = 40.0
 offset_right = 590.0
 offset_bottom = 136.0
+
+[connection signal="area_entered" from="Game/WorldLimit" to="." method="_on_game_end" unbinds=1]
