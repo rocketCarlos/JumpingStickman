@@ -9,6 +9,8 @@ Player
 @onready var animation = $AnimatedSprite2D
 @onready var combo_timer = $ComboTimer
 @onready var defeated_sprite = $DefeatedSprite
+@onready var action_sfx = $Action
+@onready var jump_sfx = $Jump
 #endregion
 
 @export var scene_trace: PackedScene
@@ -50,6 +52,7 @@ func _ready():
 	Globals.combo_succeeded.connect(_on_combo_succeeded)
 	Globals.combo_failed.connect(_on_combo_failed)
 	Globals.new_enemy.connect(_on_new_enemy)
+	Globals.world_limit.connect(_on_area_entered)
 
 func _process(delta: float) -> void:
 	# -- Action input procesing --
@@ -88,6 +91,7 @@ func _process(delta: float) -> void:
 		playing_action = true
 		Globals.start_arrow.emit()
 		if next_action != Globals.actions.JUMP: 
+			action_sfx.play()
 			stop_jump()
 			stop_gravity() 
 	elif animation.animation == 'jump':
@@ -97,12 +101,13 @@ func _process(delta: float) -> void:
 	elif position.y == FLOOR_LEVEL and not playing_action:
 		animation.play('run')
 	
-	# add trace
-	var instance_trace = scene_trace.instantiate()
-	instance_trace.global_position = global_position
-	instance_trace.intensity = (sqrt(Engine.time_scale)-1)/(sqrt(Engine.time_scale)+0.5)
-	instance_trace.texture = animation.sprite_frames.get_frame_texture(animation.animation, animation.frame)
-	add_sibling(instance_trace)
+	# add trace if not defeated
+	if defeated_sprite.visible == false:
+		var instance_trace = scene_trace.instantiate()
+		instance_trace.position = position
+		instance_trace.intensity = (sqrt(Engine.time_scale)-1)/(sqrt(Engine.time_scale)+0.5)
+		instance_trace.texture = animation.sprite_frames.get_frame_texture(animation.animation, animation.frame)
+		add_sibling(instance_trace)
 	
 #endregion
 
@@ -110,6 +115,7 @@ func _process(delta: float) -> void:
 func jump() -> void:
 	stop_jump()
 	# tween for jump
+	jump_sfx.play()
 	jump_tween = get_tree().create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 	jump_tween.tween_property(self, 'position', Vector2(position.x, JUMP_LEVEL), 0.25)
 	await jump_tween.finished
@@ -192,8 +198,9 @@ func start_defeated_animation() -> void:
 		
 
 #region signal functions
-func _on_area_entered(area: Area2D) -> void:
+func _on_area_entered(area: Area2D = null) -> void:
 	Globals.player_defeated_animation.emit()
+	action_queue.clear()
 	start_defeated_animation()
 
 
@@ -221,6 +228,8 @@ func _on_combo_succeeded():
 	
 func _on_combo_failed():
 	# cancel animations and clear action queue
+	action_sfx.stop()
+	jump_sfx.stop()
 	action_queue.clear()
 	playing_action = false
 	if position.y == FLOOR_LEVEL:

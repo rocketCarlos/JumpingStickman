@@ -9,6 +9,8 @@ const POS_SPAWNER = Vector2(178.575, 70.5)
 
 @onready var button_play = $Game/Play
 @onready var label_score = $UIHolder/Score
+@onready var background_music = $Sound/BackgroundMusic
+@onready var death_sound = $Sound/DeathSound
 var POS_SCORE = Vector2(924, 28)
 var score = 0
 
@@ -22,6 +24,7 @@ func _ready() -> void:
 
 func _on_game_start() -> void:
 	Engine.time_scale = 1
+	background_music.play()
 	
 	instance_player = scene_player.instantiate()
 	instance_player.position = POS_PLAYER - Vector2(35, 0)
@@ -35,6 +38,7 @@ func _on_game_start() -> void:
 	var score_tween = get_tree().create_tween()
 	score_tween.tween_property(label_score, "position", POS_SCORE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	set_score(0)
+	Globals.defeated_enemies = 0
 	
 func _on_game_end() -> void:
 	instance_player.queue_free()
@@ -48,4 +52,10 @@ func set_score(value: int) -> void:
 	label_score.text = str(value)
 
 func _on_player_defeated_animation() -> void:
+	background_music.stop()
+	death_sound.play()
 	instance_spawner.queue_free()
+
+
+func _on_world_limit_area_entered(area: Area2D) -> void:
+	Globals.world_limit.emit()

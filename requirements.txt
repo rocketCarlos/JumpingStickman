@@ -22,20 +22,15 @@ MUST HAVE:
 			[x] front kick
 			[x] spin kick
 			[x] downwards punch
-			
+	[] music
+	[] sfx
 
 NICE TO HAVE:
 	[x] improve arrow visuals when a combo succeeds
 	[x] enemies show bright arrows
 	
-	-> Implemented this way right now, think about it again!
 	[x] point combo build up, like extra points for not failing the movement combos
-	[] speed management based on combo points. steps rather than smoothly adding speed
-	[] trace based on combo points rather than in speed
 	
-	[] music
-	[] sfx
-
 CHEFF KISS:
 	[] extra effects to animations, like colors and screen shakes
 	[] infinite parallax layer background

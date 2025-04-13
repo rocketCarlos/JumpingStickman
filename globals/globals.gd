@@ -38,4 +38,6 @@ signal new_enemy
 # emitted to update the combo
 signal combo_updated
 # emitted to manage player defeated animation
-signal player_defeated_animation()
+signal player_defeated_animation
+# emitted when enemy reaches the end of the world
+signal world_limit
